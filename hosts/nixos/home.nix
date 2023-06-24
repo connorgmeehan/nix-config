@@ -12,6 +12,14 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+    ../../shared/home-modules/zsh.nix
+    import ../../shared/home-modules/kitty.nix {
+      keybindPrefix = "ctrl+super+"
+    }
+
+    ./home-modules/gnome.nix
+    ./home-modules/chromium.nix
+    ./home-modules/vscode.nix
   ];
 
   nixpkgs = {
@@ -43,8 +51,8 @@
 
   # TODO: Set your username
   home = {
-    username = "your-username";
-    homeDirectory = "/home/your-username";
+    username = "cgm";
+    homeDirectory = "/home/cgm";
   };
 
   # Add stuff for your user as you see fit:

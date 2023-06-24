@@ -1,5 +1,42 @@
 {
   "nodes": {
+    "dzgui": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1684544593,
+        "narHash": "sha256-UTewFmIqTq71AlFgJDG81Eqgb5mEUvgTtkOXqbCAsD0=",
+        "owner": "aclist",
+        "repo": "dztui",
+        "rev": "72eab0daf0ea473a81107fefe205f8cd2842cb79",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aclist",
+        "repo": "dztui",
+        "type": "github"
+      }
+    },
+    "dzgui-nix": {
+      "inputs": {
+        "dzgui": "dzgui",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1685142003,
+        "narHash": "sha256-sxck/NyMNG/6VDkyvcjljPbg/BJnAHNdGIeRvsl5Nkw=",
+        "owner": "lelgenio",
+        "repo": "dzgui-nix",
+        "rev": "12ca1bf0a7a141338abf558245cb2c2c433206da",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lelgenio",
+        "repo": "dzgui-nix",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -55,6 +92,7 @@
     },
     "root": {
       "inputs": {
+        "dzgui-nix": "dzgui-nix",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable"
