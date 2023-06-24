@@ -13,9 +13,9 @@
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
     ../../shared/home-modules/zsh.nix
-    import ../../shared/home-modules/kitty.nix {
+    (import ../../shared/home-modules/kitty.nix {
       keybindPrefix = "super+"
-    }
+    })
   ];
 
   nixpkgs = {
@@ -64,4 +64,6 @@
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
+
+  home.packages = with pkgs; [ neovim zsh slack lazygit ];
 }

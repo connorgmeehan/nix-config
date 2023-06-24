@@ -1,13 +1,17 @@
-{ config, pkgs, keybindPrefix ? "ctrl+super+",  ... }:
+# keybindPrefix {string} Prefix for various keybinds like Super+c to copy
+{ config, pkgs, lib, keybindPrefix ? "ctrl+super+",  ... }:
 
+let 
+  TEST_1 = lib.debug.traceVal ("Building kitty config with ${keybindPrefix}");
+in
 {
   programs.kitty = {
     enable = true;
-    keybindings = {
-      keybindPrefix + "c" = "copy_to_clipboard";
-      keybindPrefix + "v" = "paste_from_clipboard";
-      keybindPrefix + "w" = "close_window";
-      keybindPrefix + "t" = "new_tab";
+    keybindings = lib.mapAttrs' (keybind: action: lib.nameValuePair (keybindPrefix + keybind) (action)) {
+      "c" = "copy_to_clipboard";
+      "v" = "paste_from_clipboard";
+      "w" = "close_window";
+      "t" = "new_tab";
     };
     font = {
       package = (pkgs.nerdfonts.override { fonts = [ "Hack" ]; });
