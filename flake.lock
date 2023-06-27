@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "darwin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1687517837,
+        "narHash": "sha256-Ea+JTy6NSf+wWIFrgC8gnOnyt01xwmtDEn2KecvaBkg=",
+        "owner": "lnl7",
+        "repo": "nix-darwin",
+        "rev": "6460468e7a3e1290f132fee4170ebeaa127f6f32",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lnl7",
+        "ref": "master",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
     "dzgui": {
       "flake": false,
       "locked": {
@@ -92,6 +113,7 @@
     },
     "root": {
       "inputs": {
+        "darwin": "darwin",
         "dzgui-nix": "dzgui-nix",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",

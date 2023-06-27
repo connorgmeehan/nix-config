@@ -13,6 +13,9 @@
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    darwin.url = "github:lnl7/nix-darwin/master";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     # DayZ Gui for launching with proton
     dzgui-nix.url = "github:lelgenio/dzgui-nix";
     dzgui-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -25,7 +28,7 @@
     # nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, darwin, ... }@inputs:
     let
       inherit (self) outputs;
       forAllSystems = nixpkgs.lib.genAttrs [
@@ -72,6 +75,15 @@
         };
       };
 
+      darwinConfigurations = {
+        "Connors-MacBook-Pro" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin"; # "x86_64-darwin" if you're using a pre M1 mac
+          modules = [
+            ./hosts/mbp/darwin-configuration.nix 
+          ];
+        };
+      };
+
       # Standalone home-manager configuration entrypoint
       # Available through 'home-manager --flake .#your-username@your-hostname'
       homeConfigurations = {
@@ -86,7 +98,7 @@
         };
         # MacOS Install
         "connormeehan@Connors-MacBook-Pro" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          pkgs = nixpkgs.legacyPackages.x86_64-darwin; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             # > Our main home-manager configuration file <
