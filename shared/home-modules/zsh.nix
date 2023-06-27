@@ -9,6 +9,8 @@
     '';
     initExtra = ''
       prompt_nix_shell_setup
+
+      eval "$(fnm env --use-on-cd)"
     '';
     zplug = {
       enable = true;

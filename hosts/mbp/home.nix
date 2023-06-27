@@ -17,6 +17,8 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     (import ../../shared/home-modules/kitty.nix ( lib.mergeAttrs args {
       keybindPrefix = "super+";
     } ))
+
+    ../../shared/home-modules/neovim.nix
   ];
 
   nixpkgs = {
@@ -68,5 +70,5 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
 
-  home.packages = with pkgs; [ neovim zsh slack lazygit ];
+  home.packages = with pkgs; [ slack lazygit ];
 }
