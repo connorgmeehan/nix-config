@@ -19,6 +19,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     } ))
 
     ../../shared/home-modules/neovim.nix
+    ../../shared/home-modules/git.nix
   ];
 
   nixpkgs = {
