@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
+  home.packages = [ pkgs.unzip pkgs.ccls ];
   programs.neovim = {
     enable = true;
     defaultEditor = true;
