@@ -20,12 +20,8 @@
     dzgui-nix.url = "github:lelgenio/dzgui-nix";
     dzgui-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # TODO: Add any other flake you might need
-    # hardware.url = "github:nixos/nixos-hardware";
-
-    # Shameless plug: looking for a way to nixify your themes and make
-    # everything match nicely? Try nix-colors!
-    # nix-colors.url = "github:misterio77/nix-colors";
+    # Shared color config between applications
+    base16.url = "github:SenchoPens/base16.nix";
   };
 
   outputs = { self, nixpkgs, home-manager, darwin, ... }@inputs:
@@ -38,8 +34,8 @@
         "aarch64-darwin"
         "x86_64-darwin"
       ];
-    in
-    rec {
+    in {
+      base16 = inputs.base16;
       # Your custom packages
       # Acessible through 'nix build', 'nix shell', etc
       packages = forAllSystems (system:

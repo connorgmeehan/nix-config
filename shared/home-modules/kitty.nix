@@ -2,7 +2,7 @@
 { config, pkgs, lib, keybindPrefix ? "ctrl+super+",  ... }:
 
 let 
-  TEST_1 = lib.debug.traceVal ("Building kitty config with ${keybindPrefix}");
+  scheme = config.scheme.withHashtag;
 in
 {
   programs.kitty = {
@@ -12,6 +12,7 @@ in
       "v" = "paste_from_clipboard";
       "w" = "close_window";
       "t" = "new_tab";
+      "opt+," = "debug_config";
     };
     font = {
       package = (pkgs.nerdfonts.override { fonts = [ "Hack" ]; });
@@ -54,7 +55,35 @@ in
       # For nnn
       allow_remote_control = true;
       listen_on = "unix:/tmp/kitty";
+
+      # Colorscheme defined in xdg.configFile below
+      include = "theme.conf";
     };
   };
+
+  xdg.configFile."kitty/theme.conf".text = ''
+    background #212733
+    foreground #d9d7ce
+    cursor #ffcc66
+    selection_background #343f4c
+    selection_foreground #212733
+
+    color0 ${scheme.base00}
+    color1 ${scheme.base01}
+    color2 ${scheme.base02}
+    color3 ${scheme.base03}
+    color4 ${scheme.base04}
+    color5 ${scheme.base05}
+    color6 ${scheme.base06}
+    color7 ${scheme.base07}
+    color8 ${scheme.base08}
+    color9 ${scheme.base09}
+    color10 ${scheme.base0A}
+    color11 ${scheme.base0B}
+    color12 ${scheme.base0C}
+    color13 ${scheme.base0D}
+    color14 ${scheme.base0E}
+    color15 ${scheme.base0F}
+  '';
 }
 

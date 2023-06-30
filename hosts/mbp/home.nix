@@ -6,20 +6,24 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
     # outputs.homeManagerModules.example
+    inputs.base16.homeManagerModule
+    outputs.homeManagerModules.zinit
 
+    ../../shared/home-modules/colors.nix
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
-    ../../shared/home-modules/zsh.nix
     # Imports module with custom arguments
     (import ../../shared/home-modules/kitty.nix ( lib.mergeAttrs args {
-      keybindPrefix = "super+";
+      keybindPrefix = "cmd+";
     } ))
 
+    ../../shared/home-modules/zsh.nix
     ../../shared/home-modules/neovim.nix
     ../../shared/home-modules/git.nix
+    ../../shared/home-modules/lazygit.nix
   ];
 
   nixpkgs = {
