@@ -144,7 +144,7 @@
   users.users.cgm = {
     isNormalUser = true;
     description = "Connor Meehan";
-    extraGroups = [ "networkmanager" "wheel" "config-man" "uinput" ];
+    extraGroups = [ "networkmanager" "wheel" "config-man" "uinput" "libvirtd" ];
     openssh.authorizedKeys.keys = [
       # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
     ];
@@ -171,10 +171,15 @@
     wmctrl
     xclip
     cachix
+
     gnome.gnome-boxes
+    virt-manager
+
+    protontricks
   ];
 
   ## PROGRAMS CONFIG
+  programs.dconf.enable = true;
   programs.neovim = {
     enable = true;
     defaultEditor = true;
