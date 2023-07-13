@@ -6,6 +6,7 @@
   imports = [
     # If you want to use modules your own flake exports (from modules/nixos):
     # outputs.nixosModules.example
+    ./cachix.nix
 
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
@@ -71,9 +72,12 @@
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # Kernel Modules
-  boot.kernelModules = [ "uinput" ];
+  boot.kernelModules = [ "uinput" "i2c-dev" "i2c-i801" ];
 
-    # Enable networking
+  # Enable virtualisation
+  virtualisation.libvirtd.enable = true;
+
+  # Enable networking
   networking.networkmanager.enable = true;
 
   # Set your time zone.
@@ -140,7 +144,7 @@
   users.users.cgm = {
     isNormalUser = true;
     description = "Connor Meehan";
-    extraGroups = [ "networkmanager" "wheel" "config-man" "uinput" ];
+    extraGroups = [ "networkmanager" "wheel" "config-man" "uinput" "libvirtd" ];
     openssh.authorizedKeys.keys = [
       # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
     ];
@@ -162,14 +166,20 @@
     clang
     rustup
     ripgrep
-    fnm
     gnome.zenity
     jq
     wmctrl
     xclip
+    cachix
+
+    gnome.gnome-boxes
+    virt-manager
+
+    protontricks
   ];
 
   ## PROGRAMS CONFIG
+  programs.dconf.enable = true;
   programs.neovim = {
     enable = true;
     defaultEditor = true;
@@ -198,9 +208,15 @@
   services.openssh = {
     enable = true;
     # Forbid root login through SSH.
-    permitRootLogin = "no";
+    settings.PermitRootLogin = "no";
     # Use keys only. Remove if you want to SSH using password (not recommended)
-    passwordAuthentication = false;
+    settings.PasswordAuthentication = false;
+  };
+
+  services.hardware.openrgb = {
+    enable = true;
+    motherboard = "intel";
+    package = pkgs.openrgb-with-all-plugins;
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

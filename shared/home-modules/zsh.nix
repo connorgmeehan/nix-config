@@ -8,7 +8,8 @@ in {
   programs.zsh = {
     enable = true;
     shellAliases = {
-      cvim = "NVIM_APPNAME=nvchad nvim";
+      ns = "nix-shell --command zsh";
+      ll = "ls -la";
     };
     initExtraFirst = ''
       source ~/.p10k.zsh
@@ -35,8 +36,9 @@ in {
     zinit = {
       enable = true;
       plugins = [
-        { name = "zsh-users/zsh-autosuggestions"; } # Simple plugin installation
-        { name = "zsh-users/zsh-syntax-highlighting"; ice = [ "wait'1'" ]; } # Simple plugin installation
+        { name = "zsh-users/zsh-autosuggestions"; ice = [ "wait'1'" "lucid" ]; } # Simple plugin installation
+        { name = "zsh-users/zsh-syntax-highlighting"; ice = [ "wait'1'" "lucid" ]; } # Simple plugin installation
+        { name = "chisui/zsh-nix-shell"; } # Simple plugin installation
         { name = "sindresorhus/pure"; ice = [ "compile'(pure|async).zsh'" "pick'async.zsh'" "src'pure.zsh'" ]; } # Installations with additional options. For the list of options, please refer to Zplug README.
         #{ name = "romkatv/powerlevel10k"; ice = [ "depth=1" ]; strategy = "light"; } # Installations with additional options. For the list of options, please refer to Zplug README.
       ];
