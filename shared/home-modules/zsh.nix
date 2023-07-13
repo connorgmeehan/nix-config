@@ -12,9 +12,11 @@ in {
     };
     initExtraFirst = ''
       source ~/.p10k.zsh
+
     '';
     initExtra = ''
       eval "$(fnm env --use-on-cd)"
+      export PATH="$PATH":~/.cargo/bin
     '';
 
 
