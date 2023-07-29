@@ -18,6 +18,10 @@ in {
     initExtra = ''
       eval "$(fnm env --use-on-cd)"
       export PATH="$PATH":~/.cargo/bin
+
+      # PNPM setup
+      export PATH="$PATH":$HOME/.local/share/pnpm/
+      export PNPM_HOME="$HOME/.local/share/pnpm/"
     '';
 
 
