@@ -87,5 +87,14 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     ny
 
     nodejs_18
+    nodePackages.yarn
+    nodePackages.pnpm
+    nodePackages.serve
+    nodePackages.serverless
+
+    google-chrome
+    google-chrome-dev
+    fnm
+    android-tools
   ];
 }
