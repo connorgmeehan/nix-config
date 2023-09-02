@@ -84,6 +84,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
 
     blender 
     unigine-heaven
+    ny
 
     nodejs_18
   ];
