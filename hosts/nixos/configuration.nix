@@ -39,11 +39,6 @@
       #   });
       # })
     ];
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-    };
   };
 
   nix = {
@@ -63,6 +58,8 @@
     };
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   # FIXME: Add the rest of your current configuration
 
   networking.hostName = "nixos";
@@ -77,6 +74,7 @@
 
   # Enable virtualisation
   virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
 
   # Enable networking
   networking.networkmanager.enable = true;
