@@ -1,7 +1,12 @@
 { config, pkgs, lib, ... }:
 
 {
-  home.packages = [ pkgs.unzip pkgs.ccls ];
+  home.packages = [
+    pkgs.unzip
+    pkgs.ccls
+    pkgs.deno
+    pkgs.rustywind
+  ];
   programs.neovim = {
     enable = true;
     defaultEditor = true;
