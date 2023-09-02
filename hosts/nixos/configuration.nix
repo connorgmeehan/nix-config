@@ -15,6 +15,7 @@
     # Modular config
     ./modules/kanata.nix
     ./modules/nvidia.nix
+    ./modules/android-dev.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
