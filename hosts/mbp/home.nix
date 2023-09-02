@@ -75,5 +75,10 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.05";
 
-  home.packages = with pkgs; [ slack lazygit nodePackages.pnpm ];
+  home.packages = with pkgs; [
+    awscli2
+    slack
+    lazygit
+    nodePackages.pnpm
+  ];
 }
