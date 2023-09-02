@@ -13,12 +13,26 @@ M.treesitter = {
     "c",
     "markdown",
     "markdown_inline",
+    "hcl"
   },
   indent = {
     enable = true,
     -- disable = {
     --   "python"
     -- },
+  },
+    -- the related part.
+  highlight = {
+    enable = true,
+    language_tree = true,
+    is_supported = function ()
+      if vim.fn.strwidth(vim.fn.getline('.')) > 2000
+        or vim.fn.getfsize(vim.fn.expand('%')) > 1024 * 1024 then
+        return false
+      else
+        return true
+      end
+    end
   },
 }
 
@@ -39,6 +53,9 @@ M.mason = {
     "rustywind",
     "vue-language-server",
     "svelte-language-server",
+
+    "terraform-ls",
+    "tf-lint",
 
     -- c/cpp stuff
     "clangd",
