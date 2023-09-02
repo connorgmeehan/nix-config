@@ -4,6 +4,8 @@
     keyboards.main = {
       devices = [
         "/dev/input/by-id/usb-Keebio_Quefrency_Rev._4-event-kbd"
+        "/dev/input/by-id/usb-CM_Storm_Side_print-event-kbd"
+        "/dev/input/by-id/usb-TUCustomStation_TU42A_Keyboard_TU_CUSTOMED_KEYBOARD-event-kbd"
       ];
       config = 
         ''
@@ -22,39 +24,36 @@
 ;;
 ;; Aliases are referred to by `@<alias_name>`.
 (defalias
-  ;; tap for capslk, hold for lctl
-  cap (tap-hold-press 200 5000 esc (layer-toggle esc-layer))
-  ;; cap (multi esc (layer-while-held esc-layer))
-  cmd (multi lmet (layer-while-held cmd-layer))
+  cmd (tap-hold-press 200 5000 lmet (layer-toggle cmd-layer))
 
   ;; Map meta -> control 
-  ca C-a
-  cb C-b
-  cc C-c
-  cd C-d
-  ce C-e
-  cf C-f
-  cg C-g
-  ch C-h
-  ci C-i
-  cj C-j
-  ck C-k
-  cl C-l
-  cm C-m
-  cn C-n
-  co C-o
-  cp C-p
-  cq C-q
-  cr C-r
-  cs C-s
-  ct C-t
-  cu C-u
-  cv C-v
-  cw C-w
-  cx C-x
-  cy C-y
-  cz C-z
-
+  ca (macro C-(a))
+  cb (macro C-(b))
+  cc (macro C-(c))
+  cd (macro C-(d))
+  ce (macro C-(e))
+  cf (macro C-(f))
+  cg (macro C-(g))
+  ch (macro C-(h))
+  ci (macro C-(i))
+  cj (macro C-(j))
+  ck (macro C-(k))
+  cl (macro C-(l))
+  cm (macro C-(m))
+  cn (macro C-(n))
+  co (macro C-(o))
+  cp (macro C-(p))
+  cq (macro C-(q))
+  cr (macro C-(r))
+  cs (macro C-(s))
+  ct (macro C-(t))
+  cu (macro C-(u))
+  cv (macro C-(v))
+  cw (macro C-(w))
+  cx (macro C-(x))
+  cy (macro C-(y))
+  cz (macro C-(z))
+  tab (macro M-tab M-tab)
   jmpl C-left
   jmpr C-rght
   del del
@@ -69,26 +68,17 @@
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12           prtsc slck pause
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc     ins   home pgup
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    \        del   \    pgdn    
-  @cap a    s    d    f    g    h    j    k    l    ;    '    ret           
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret           
   lsft z    x    c    v    b    n    m    ,    .    /    rsft                     up
   lctl lalt @cmd           spc                           ralt rmet rctl     left  down rght)
 (deflayer cmd-layer
   _    _    _    _    _    _    _    _    _    _    _    _    _             _     _     _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _        _     _     _
-  _    @cq  @cw  @ce  @cr  @ct  @cy  @cu  @ci  @co  @cp  _    _    _        _     _     _
+  @tab @cq  @cw  @ce  @cr  @ct  @cy  @cu  @ci  @co  @cp  _    _    _        _     _     _
   _    @ca  @cs  @cd  @cf  @cg  @ch  @cj  @ck  @cl  _    _    _             
   lsft    @cz  @cx  @cc  @cv  @cb  @cn  @cm  _    _    _    _                     _
   _    _    _              _                             _    _    _        _     _     _
 )
-(deflayer esc-layer
-  _    _    _    _     _    _    _    _    _  _    _    _    _             _     _    _
-  _    _    _    _     _    _    _    _    _  _    _    _    _    _        _     _    _
-  _    _    _    @jmpr _    _    _    _    _  _    _    _    _    _        _     _    _
-  _    _    _    _     _    _    left down up rght _    _    _             
-  _    _    @del _     _    @jmpl     ret  _    _  _    _    _                        _
-  _    _    _              _                             _    _    _        _     _    _
-)
-
 
 	'';
     };
