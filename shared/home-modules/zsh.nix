@@ -16,12 +16,15 @@ in {
 
     '';
     initExtra = ''
+      # Netlify Large media
+      if [ -f '${config.home.homeDirectory}/.config/netlify/helper/git-config' ]; then source '${config.home.homeDirectory}/.config/netlify/helper/git-config'; fi
+
       eval "$(fnm env --use-on-cd)"
-      export PATH="$PATH":~/.cargo/bin
+      export PATH="$PATH":${config.home.homeDirectory}/.cargo/bin
 
       # PNPM setup
-      export PATH="$PATH":$HOME/.local/share/pnpm/
-      export PNPM_HOME="$HOME/.local/share/pnpm/"
+      export PATH="$PATH":${config.home.homeDirectory}/.local/share/pnpm/
+      export PNPM_HOME="${config.home.homeDirectory}/.local/share/pnpm/"
     '';
 
 
