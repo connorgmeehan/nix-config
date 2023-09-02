@@ -1,32 +1,31 @@
-{ lib, fetchurl }:
+{ pkgs ? import <nixpkgs> { system = builtins.currentSystem; }
+, lib ? pkgs.lib
+, fetchFromGitHub ? pkgs.fetchFromGitHub
+, rustPlatform ? pkgs.rustPlatform
+}:
 
-with lib;
-
-let
-  sha256sum = "f52edca4859bbbb3bfa2be3d1eb75802b80c7bf305a9c7e97f98cf33613e0aa8";
-  url = "https://github.com/krzkaczor/ny/releases/download/v0.1.1/ny-x86_64-unknown-linux-musl.tar.gz";
-in
-stdenv.mkDerivation rec {
+# Ny requires rust nightly
+rustPlatform.buildRustPackage rec {
   pname = "ny";
-  version = "0.1.1";  # Set the version number accordingly
+  version = "v0.1.1";
 
-  src = fetchurl {
-    url = url;
-    sha256 = sha256sum;
+  src = fetchFromGitHub {
+    owner = "krzkaczor";
+    repo = pname;
+    rev = version;
+    hash = "sha256-LanRXZ031NemARBvQX5GLZgqn7lOY1R+N4wT4uWI0mA=";
   };
 
-  # Extract the contents of the archive
-  unpackPhase = "tar xzf $src";
+  cargoHash = "sha256-WXJU+LC9wbsHVJIL2ZnVzkKJyL5CZXJi9TO9Z42CUr0=";
 
-  # Define a wrapper script or add necessary setup here
+  env = {
+    # requires nightly features
+    RUSTC_BOOTSTRAP = true;
+  };
 
-  # You can add more build inputs and setup phases as needed
-  nativeBuildInputs = [ ];
-
-  buildInputs = [ ];
-
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A description of the ny package";
+    homepage = "https://github.com/krzkaczor/ny";
     license = licenses.mit;
   };
 }
