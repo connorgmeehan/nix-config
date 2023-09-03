@@ -174,6 +174,8 @@
     gnome.gnome-boxes
     virt-manager
 
+    escape-fsh
+
     protontricks
   ];
 
