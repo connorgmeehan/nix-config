@@ -80,6 +80,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
   home.packages = with pkgs; [
     zsh
     slack
+    spotify
     lazygit
 
     blender 
