@@ -74,6 +74,7 @@
 
   # Enable virtualisation
   virtualisation.libvirtd.enable = true;
+  virtualisation.docker.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
 
   # Enable networking
@@ -143,7 +144,7 @@
   users.users.cgm = {
     isNormalUser = true;
     description = "Connor Meehan";
-    extraGroups = [ "networkmanager" "wheel" "config-man" "uinput" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "config-man" "uinput" "libvirtd" "docker" ];
     openssh.authorizedKeys.keys = [
       # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
     ];
