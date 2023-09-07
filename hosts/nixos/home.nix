@@ -95,7 +95,6 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
 
     google-chrome
     google-chrome-dev
-    fnm
     android-tools
   ];
 }

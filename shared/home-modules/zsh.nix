@@ -38,7 +38,6 @@ in {
               # Netlify Large media
               if [ -f '${config.home.homeDirectory}/.config/netlify/helper/git-config' ]; then source '${config.home.homeDirectory}/.config/netlify/helper/git-config'; fi
 
-              eval "$(fnm env --use-on-cd)"
               export PATH="$PATH":${config.home.homeDirectory}/.cargo/bin
 
               # PNPM setup

@@ -75,6 +75,7 @@
   # Enable virtualisation
   virtualisation.libvirtd.enable = true;
   virtualisation.docker.enable = true;
+  virtualisation.docker.enableNvidia = true;
   virtualisation.spiceUSBRedirection.enable = true;
 
   # Enable networking
