@@ -207,6 +207,12 @@
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
 
+  networking.firewall.allowedTCPPortRanges = [
+    { from = 5170; to = 5180; }
+    { from = 8000; to = 9000; }
+  ];
+
+
   # This setups a SSH server. Very important if you're setting up a headless system.
   # Feel free to remove if you don't need it.
   services.openssh = {
