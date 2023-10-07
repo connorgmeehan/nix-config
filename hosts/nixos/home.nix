@@ -82,6 +82,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     slack
     spotify
     lazygit
+    gittyup
 
     blender 
     unigine-heaven
