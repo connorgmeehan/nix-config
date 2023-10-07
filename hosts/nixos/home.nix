@@ -93,6 +93,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     nodePackages.pnpm
     nodePackages.serve
     nodePackages.serverless
+    nodePackages.npm-check-updates
 
     google-chrome
     google-chrome-dev
