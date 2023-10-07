@@ -227,29 +227,40 @@ local plugins = {
 	-- 		{ "<leader>rl", "<cmd>lua require’sniprun.live_mode’.toggle()<cr>" },
 	-- 	},
 	-- },
-      {
-        "dccsillag/magma-nvim",
-        build = ":UpdateRemotePlugins",
-            keys = {
-                { "<leader>r", "<cmd>MagmaEvaluateOperator<cr>", expr = true, silent = true },
-                { "<leader>r", "<cmd><C-u>MagmaEvaluateVisual", mode = "v" },
-                { "<leader>rr", "<cmd>MagmaEvaluateLine<cr>" },
-                { "<leader>rq", "<cmd>MagmaDelete<cr>" },
-                { "<leader>ro", "<cmd>MagmaShowOutput<cr>" },
-            },
-      },
+    {
+      "dccsillag/magma-nvim",
+      build = ":UpdateRemotePlugins",
+          keys = {
+              { "<leader>r", "<cmd>MagmaEvaluateOperator<cr>", expr = true, silent = true },
+              { "<leader>r", "<cmd><C-u>MagmaEvaluateVisual", mode = "v" },
+              { "<leader>rr", "<cmd>MagmaEvaluateLine<cr>" },
+              { "<leader>rq", "<cmd>MagmaDelete<cr>" },
+              { "<leader>ro", "<cmd>MagmaShowOutput<cr>" },
+          },
+    },
 
-      {
-        "pmizio/typescript-tools.nvim",
-        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-        ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+    {
+      "pmizio/typescript-tools.nvim",
+      dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+      ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+      opts = {
+          on_attach = function(client)
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          end,
+      },
+    },
+
+    {
+        "f-person/git-blame.nvim",
+        cmd = { "GitBlameToggle", "GitBlameEnable", "GitBlameDisable" },
         opts = {
-            on_attach = function(client)
-              client.server_capabilities.documentFormattingProvider = false
-              client.server_capabilities.documentRangeFormattingProvider = false
-            end,
+          enabled = true,
         },
-      }
+        keys = {
+            { "<leader>tb", "<cmd>GitBlameToggle<cr>", desc = "Git Blame" }
+        }
+    }
 }
 
 return plugins
