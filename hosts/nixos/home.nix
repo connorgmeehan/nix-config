@@ -98,5 +98,8 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     google-chrome
     google-chrome-dev
     android-tools
+
+    fzf
+    clippy
   ];
 }
