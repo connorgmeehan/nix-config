@@ -88,6 +88,8 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     unigine-heaven
     ny
 
+    unstable.bruno
+
     nodejs_18
     nodePackages.yarn
     nodePackages.pnpm
@@ -95,8 +97,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     nodePackages.serverless
     nodePackages.npm-check-updates
 
-    google-chrome
-    google-chrome-dev
+    unstable.google-chrome
     android-tools
 
     fzf
