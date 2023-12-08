@@ -42,7 +42,7 @@ local plugins = {
     {
         "nvim-telescope/telescope.nvim",
         dependencies = { "nvim-treesitter/nvim-treesitter", { "nvim-telescope/telescope-fzf-native.nvim", build = "mkdir -p build && cd build && cmake ../CMakeList.txt && make" } },
-    }
+    },
 
 	{
 		"nvim-neo-tree/neo-tree.nvim",
