@@ -44,8 +44,6 @@ M.general = {
     -- Tree
     ["<leader>e"] = { "<cmd>:Neotree filesystem reveal left toggle<CR>", "File tree"},
     ["<leader>E"] = { "<cmd>:Neotree filesystem reveal left<CR>", "Focus tree"},
-    ["<leader>g"] = { "<cmd>:Neotree git_status reveal left toggle<CR>", "Git status"},
-    ["<leader>G"] = { "<cmd>:Neotree git_status reveal left toggle<CR>", "Focus Git"},
 
     --
     ["<leader>cd"] = { "<cmd>Telescope lsp_definitions<CR>", "Format buffer" },

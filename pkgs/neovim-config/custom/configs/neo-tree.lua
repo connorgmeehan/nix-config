@@ -11,7 +11,6 @@ neotree.setup({
   sources = {
     "filesystem",
     "document_symbols",
-    "git_status",
   },
   source_selector = {
     winbar = true,
