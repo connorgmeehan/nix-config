@@ -25,3 +25,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufNew", "BufWinEnter"  }, {
   group = vim.api.nvim_create_augroup("ts_fold_workaround", { clear = true }),
   command = "set foldexpr=nvim_treesitter#foldexpr()",
 })
+
+-- Fix Neogit highlight
+vim.api.nvim_set_hl(0, 'NeogitDiffDelete', { fg = "#bf565f", bg = "#261f1f" })
+vim.api.nvim_set_hl(0, 'NeogitDiffDeleteHighlight', { fg = "#d8616b", bg = "#342a2a" })
