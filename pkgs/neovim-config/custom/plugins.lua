@@ -39,6 +39,11 @@ local plugins = {
 		enabled = false,
 	},
 
+    {
+        "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-treesitter/nvim-treesitter", { "nvim-telescope/telescope-fzf-native.nvim", build = "mkdir -p build && cd build && cmake ../CMakeList.txt && make" } },
+    },
+
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v2.x",
@@ -146,11 +151,11 @@ local plugins = {
 		event = { "BufReadPost", "BufNewFile" },
 		opts = {
 			-- char = "▏",
-			char = "│",
-			filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
-			show_trailing_blankline_indent = false,
-			show_current_context = false,
+            exclude = {
+                filetypes = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
+            }
 		},
+        main = "ibl",
 	},
 
 	-- Winbar status line
@@ -235,27 +240,35 @@ local plugins = {
 	-- 		{ "<leader>rl", "<cmd>lua require’sniprun.live_mode’.toggle()<cr>" },
 	-- 	},
 	-- },
-      {
-        "dccsillag/magma-nvim",
-        build = ":UpdateRemotePlugins",
-            keys = {
-                { "<leader>r", "<cmd>MagmaEvaluateOperator<cr>", expr = true, silent = true },
-                { "<leader>r", "<cmd><C-u>MagmaEvaluateVisual", mode = "v" },
-                { "<leader>rr", "<cmd>MagmaEvaluateLine<cr>" },
-                { "<leader>rq", "<cmd>MagmaDelete<cr>" },
-                { "<leader>ro", "<cmd>MagmaShowOutput<cr>" },
-            },
-      },
+    {
+      "dccsillag/magma-nvim",
+      build = ":UpdateRemotePlugins",
+          keys = {
+              { "<leader>r", "<cmd>MagmaEvaluateOperator<cr>", expr = true, silent = true },
+              { "<leader>r", "<cmd><C-u>MagmaEvaluateVisual", mode = "v" },
+              { "<leader>rr", "<cmd>MagmaEvaluateLine<cr>" },
+              { "<leader>rq", "<cmd>MagmaDelete<cr>" },
+              { "<leader>ro", "<cmd>MagmaShowOutput<cr>" },
+          },
+    },
 
-      {
-        "pmizio/typescript-tools.nvim",
-        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-        ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+    {
+      "pmizio/typescript-tools.nvim",
+      dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+      ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+      opts = {
+          on_attach = function(client)
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          end,
+      },
+    },
+
+    {
+        "f-person/git-blame.nvim",
+        cmd = { "GitBlameToggle", "GitBlameEnable", "GitBlameDisable" },
         opts = {
-            on_attach = function(client)
-              client.server_capabilities.documentFormattingProvider = false
-              client.server_capabilities.documentRangeFormattingProvider = false
-            end,
+          enabled = true,
         },
       }
 	-- Neogit for hydra git mode.

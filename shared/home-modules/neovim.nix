@@ -6,6 +6,7 @@
     pkgs.ccls
     pkgs.deno
     pkgs.rustywind
+    pkgs.unstable.rust-analyzer
   ];
   programs.neovim = {
     enable = true;

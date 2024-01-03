@@ -148,7 +148,7 @@
     description = "Connor Meehan";
     extraGroups = [ "networkmanager" "wheel" "config-man" "uinput" "libvirtd" "docker" ];
     openssh.authorizedKeys.keys = [
-      # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDAGTHOh8SIE5IP77U4WuiNayAZ5xbyo8OkZmulRKFptfFJYBdoUWSt/Wb+B+eKcREaVMbai/7SCKSNwTu2A86Jg5ZJ80eddfJWDeLYkyJ8YSNc1TKe2eIhi29MqLmsJorHmbojeh6n3ebMOdewDMKgp1+EAIsUiino940rjzsDImSUonZz+LEnkfsY5kwxZFiD0HPL/5Xs82GvzJG2fyQtLICGjVw/fG4PjYkxTUMuSNLfav+DeXcaMkqEG7DUkNiXkfAJafRx1ViVk5E47soBEI0U3Q2ERduOSprIrqlhue4Lw7V8MGsEknbx6tuc2k7nrBTslmffgTgVWpFdzPTCC4EdZH4VSM6nd+YPXVLUYUJknt8WZSxJ8HWANo2XLwEsczeDvezp5x0evq0ox8ktoLxWFBphFs9JRwqPJlLKEHxhHALPUncaVHiByJmtZ2s3nwJJSWnh5Q4j84Ti6/En3630v2X5AgC1uHnQEszygut9L+SmjsjsXfdsRgmWNYE= connormeehan@Connors-MacBook-Pro.local"
     ];
     packages = with pkgs; [
       firefox
@@ -207,14 +207,21 @@
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
 
+  networking.firewall.allowedTCPPortRanges = [
+    { from = 5170; to = 5180; }
+    { from = 8000; to = 9000; }
+  ];
+
+
   # This setups a SSH server. Very important if you're setting up a headless system.
   # Feel free to remove if you don't need it.
+  systemd.services.sshd.wantedBy = pkgs.lib.mkForce [ "multi-user.target" ];
   services.openssh = {
     enable = true;
     # Forbid root login through SSH.
     settings.PermitRootLogin = "no";
     # Use keys only. Remove if you want to SSH using password (not recommended)
-    settings.PasswordAuthentication = false;
+    settings.PasswordAuthentication = true;
   };
 
   services.hardware.openrgb = {

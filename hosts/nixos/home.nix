@@ -82,19 +82,25 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     slack
     spotify
     lazygit
+    gittyup
 
     blender 
     unigine-heaven
     ny
+
+    unstable.bruno
 
     nodejs_18
     nodePackages.yarn
     nodePackages.pnpm
     nodePackages.serve
     nodePackages.serverless
+    nodePackages.npm-check-updates
 
-    google-chrome
-    google-chrome-dev
+    unstable.google-chrome
     android-tools
+
+    fzf
+    clippy
   ];
 }
