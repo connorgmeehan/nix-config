@@ -264,13 +264,6 @@ local plugins = {
       },
     },
 
-    {
-        "f-person/git-blame.nvim",
-        cmd = { "GitBlameToggle", "GitBlameEnable", "GitBlameDisable" },
-        opts = {
-          enabled = true,
-        },
-      }
 	-- Neogit for hydra git mode.
 	{
 		"NeogitOrg/neogit",
