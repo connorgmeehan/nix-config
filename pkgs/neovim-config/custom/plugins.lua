@@ -72,15 +72,23 @@ local plugins = {
 				server = {
 					capabilities = capabilities,
 					on_attach = on_attach,
-					checkOnSave = {
-						allFeatures = true,
-						overrideCommand = {
-							"cargo",
-							"clippy",
-							"--workspace",
-							"--message-format=json",
-							"--all-targets",
-							"--all-features",
+					settings = {
+						["rust-analyzer"] = {
+							diagnostics = {
+								disabled = { "inactive-code" },
+							},
+							check = {
+								allTargets = true,
+								allFeatures = true,
+								overrideCommand = {
+									"cargo",
+									"clippy",
+									"--workspace",
+									"--message-format=json",
+									"--all-targets",
+									"--all-features",
+								},
+							},
 						},
 					},
 				},
