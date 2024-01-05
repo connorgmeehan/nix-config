@@ -82,10 +82,8 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     nodePackages.pnpm
 
     # Python packages
-    jupyter
     pdm
     python310
-    python310Packages.jupyter-client
     python310Packages.cffi
     python310Packages.ipython
     python310Packages.black
