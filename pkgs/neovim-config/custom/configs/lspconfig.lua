@@ -4,7 +4,7 @@ local capabilities = require("plugins.configs.lspconfig").capabilities
 local lspconfig = require "lspconfig"
 
 -- if you just want default config for the servers then put them in a table
-local servers = { "html", "cssls", "ccls", "tailwindcss", "volar", "lua_ls", "svelte", "yamlls", "astro", "nil_ls" }
+local servers = { "html", "cssls", "ccls", "tailwindcss", "volar", "lua_ls", "svelte", "yamlls", "astro", "nil_ls", "rust_analyzer", "jsonls" }
 
 local config_extras = {
   volar = function(config)
@@ -30,6 +30,8 @@ local config_extras = {
 }
 
 for _, lsp in ipairs(servers) do
+
+  print("Configuring LSP " .. lsp)
   local config = {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -41,6 +43,3 @@ for _, lsp in ipairs(servers) do
 
   lspconfig[lsp].setup(config)
 end
-
---
--- lspconfig.pyright.setup { blabla}

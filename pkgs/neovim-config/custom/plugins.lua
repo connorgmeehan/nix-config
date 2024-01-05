@@ -15,6 +15,7 @@ local plugins = {
 				end,
 			},
 			"folke/neodev.nvim",
+            "folke/neoconf.nvim"
 		},
 		config = function()
 			require("plugins.configs.lspconfig")
@@ -50,6 +51,11 @@ local plugins = {
 		},
 	},
 
+    {
+        "folke/neoconf.nvim",
+        config = true,
+    },
+
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		branch = "v2.x",
@@ -61,155 +67,6 @@ local plugins = {
 		cmd = "Neotree",
 		config = function()
 			require("custom.configs.neo-tree")
-		end,
-	},
-
-	{
-		"mrcjkb/rustaceanvim",
-		version = "^3", -- Recommended
-		ft = { "rust" },
-		config = function()
-			vim.g.rustaceanvim = function()
-				-- Update this path
-				local extension_path = vim.env.HOME .. "/.vscode/extensions/vadimcn.vscode-lldb-1.10.0/"
-				local codelldb_path = extension_path .. "adapter/codelldb"
-				local liblldb_path = extension_path .. "lldb/lib/liblldb"
-				local this_os = vim.uv.os_uname().sysname
-
-				-- The path is different on Windows
-				if this_os:find("Windows") then
-					codelldb_path = extension_path .. "adapter\\codelldb.exe"
-					liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
-				else
-					-- The liblldb extension is .so for Linux and .dylib for MacOS
-					liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
-				end
-
-				local rust_config_helper = require("rustaceanvim.config")
-
-				return {
-					server = {
-						settings = function(project_root)
-							local base_config = {
-								diagnostics = {
-									disabled = { "inactive-code" },
-								},
-								check = {
-									allTargets = true,
-									allFeatures = true,
-									overrideCommand = {
-										"cargo",
-										"clippy",
-										"--workspace",
-										"--message-format=json",
-									},
-								},
-							}
-							local ra = require("rustaceanvim.config.server")
-							local override_config = ra.load_rust_analyzer_settings(project_root, {
-								settings_file_pattern = "rust-analyzer.json",
-							})
-							return vim.tbl_extend("force", base_config, override_config)
-						end,
-					},
-					dap = {
-						adapter = rust_config_helper.get_codelldb_adapter(codelldb_path, liblldb_path),
-					},
-				}
-			end
-		end,
-		dependencies = {
-			"mfussenegger/nvim-dap",
-			"rcarriga/nvim-dap-ui",
-		},
-	},
-
-	-- {
-	-- 	"simrat39/rust-tools.nvim",
-	-- 	ft = "rust",
-	-- 	opts = function()
-	-- 		local on_attach = require("plugins.configs.lspconfig").on_attach
-	-- 		local capabilities = require("plugins.configs.lspconfig").capabilities
-	--
-	-- 		require("dap.ext.vscode").load_launchjs(nil, { rt_lldb = { "rust" } })
-	--
-	-- 		local mason_registry = require("mason-registry")
-	-- 		local codelldb_root = mason_registry.get_package("codelldb"):get_install_path() .. "/extension/"
-	-- 		local codelldb_path = codelldb_root .. "adapter/codelldb"
-	-- 		local liblldb_path = codelldb_root .. "lldb/lib/liblldb.dylib"
-	-- 		local adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path)
-	--
-	-- 		local options = {
-	-- 			server = {
-	-- 				capabilities = capabilities,
-	-- 				on_attach = on_attach,
-	-- 				settings = {
-	-- 					["rust-analyzer"] = {
-	-- 						diagnostics = {
-	-- 							disabled = { "inactive-code" },
-	-- 						},
-	-- 						check = {
-	-- 							allTargets = true,
-	-- 							allFeatures = true,
-	-- 							overrideCommand = {
-	-- 								"cargo",
-	-- 								"clippy",
-	-- 								"--workspace",
-	-- 								"--message-format=json",
-	-- 								"--all-targets",
-	-- 								"--all-features",
-	-- 							},
-	-- 						},
-	-- 						["checkOnSave"] = {
-	-- 							["allFeatures"] = true,
-	-- 							["extraArgs"] = { "--all-features" },
-	-- 						},
-	-- 					},
-	-- 				},
-	-- 			},
-	-- 			dap = { adapter = adapter },
-	-- 		}
-	--
-	-- 		require("dap").adapters.rust = adapter
-	--
-	-- 		return options
-	-- 	end,
-	-- 	dependencies = {
-	-- 		"neovim/nvim-lspconfig",
-	-- 		"nvim-lua/plenary.nvim",
-	-- 	},
-	-- },
-
-	-- Debugging
-	{
-		"mfussenegger/nvim-dap",
-		config = function()
-			vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DapUIStop" })
-			vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "DapUIStop" })
-			vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "DapUIType" })
-			vim.fn.sign_define("DapLogPoint", { text = "󱂅", texthl = "DapUIType" })
-			vim.fn.sign_define("DapStopped", { text = "→", texthl = "DapUIPlayPause" })
-		end,
-	},
-	{
-		"rcarriga/nvim-dap-ui",
-		dependencies = { "mfussenegger/nvim-dap" },
-		keys = "<leader>d",
-		config = function()
-			local dapui = require("dapui")
-
-			dapui.setup()
-
-			local dap = require("dap")
-			dap.listeners.after.event_initialized["dapui_config"] = function()
-				dapui.open()
-			end
-			dap.listeners.before.event_terminated["dapui_config"] = function()
-				dapui.close()
-			end
-			dap.listeners.before.event_exited["dapui_config"] = function()
-				dapui.close()
-			end
 		end,
 	},
 
