@@ -81,6 +81,8 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     lazygit
     nodePackages.pnpm
 
+    fzf
+
     # Python packages
     pdm
     python310

@@ -39,10 +39,16 @@ local plugins = {
 		enabled = false,
 	},
 
-    {
-        "nvim-telescope/telescope.nvim",
-        dependencies = { "nvim-treesitter/nvim-treesitter", { "nvim-telescope/telescope-fzf-native.nvim", build = "mkdir -p build && cd build && cmake ../CMakeList.txt && make" } },
-    },
+	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			{
+				"nvim-telescope/telescope-fzf-native.nvim",
+				build = "mkdir -p build && cd build && cmake ../CMakeList.txt && make",
+			},
+		},
+	},
 
 	{
 		"nvim-neo-tree/neo-tree.nvim",
@@ -59,58 +65,120 @@ local plugins = {
 	},
 
 	{
-		"simrat39/rust-tools.nvim",
-		ft = "rust",
-		opts = function()
-			local on_attach = require("plugins.configs.lspconfig").on_attach
-			local capabilities = require("plugins.configs.lspconfig").capabilities
+		"mrcjkb/rustaceanvim",
+		version = "^3", -- Recommended
+		ft = { "rust" },
+		config = function()
+			vim.g.rustaceanvim = function()
+				-- Update this path
+				local extension_path = vim.env.HOME .. "/.vscode/extensions/vadimcn.vscode-lldb-1.10.0/"
+				local codelldb_path = extension_path .. "adapter/codelldb"
+				local liblldb_path = extension_path .. "lldb/lib/liblldb"
+				local this_os = vim.uv.os_uname().sysname
 
-			require("dap.ext.vscode").load_launchjs(nil, { rt_lldb = { "rust" } })
+				-- The path is different on Windows
+				if this_os:find("Windows") then
+					codelldb_path = extension_path .. "adapter\\codelldb.exe"
+					liblldb_path = extension_path .. "lldb\\bin\\liblldb.dll"
+				else
+					-- The liblldb extension is .so for Linux and .dylib for MacOS
+					liblldb_path = liblldb_path .. (this_os == "Linux" and ".so" or ".dylib")
+				end
 
-			local mason_registry = require("mason-registry")
-			local codelldb_root = mason_registry.get_package("codelldb"):get_install_path() .. "/extension/"
-			local codelldb_path = codelldb_root .. "adapter/codelldb"
-			local liblldb_path = codelldb_root .. "lldb/lib/liblldb.dylib"
-			local adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path)
+				local rust_config_helper = require("rustaceanvim.config")
 
-			local options = {
-				server = {
-					capabilities = capabilities,
-					on_attach = on_attach,
-					settings = {
-						["rust-analyzer"] = {
-							diagnostics = {
-								disabled = { "inactive-code" },
-							},
-							check = {
-								allTargets = true,
-								allFeatures = true,
-								overrideCommand = {
-									"cargo",
-									"clippy",
-									"--workspace",
-									"--message-format=json",
-									"--all-targets",
-									"--all-features",
+				return {
+					server = {
+						settings = function(project_root)
+							local base_config = {
+								diagnostics = {
+									disabled = { "inactive-code" },
 								},
-							},
-						},
+								check = {
+									allTargets = true,
+									allFeatures = true,
+									overrideCommand = {
+										"cargo",
+										"clippy",
+										"--workspace",
+										"--message-format=json",
+									},
+								},
+							}
+							local ra = require("rustaceanvim.config.server")
+							local override_config = ra.load_rust_analyzer_settings(project_root, {
+								settings_file_pattern = "rust-analyzer.json",
+							})
+							return vim.tbl_extend("force", base_config, override_config)
+						end,
 					},
-				},
-				dap = { adapter = adapter },
-			}
-
-			require("dap").adapters.rust = adapter
-
-			return options
+					dap = {
+						adapter = rust_config_helper.get_codelldb_adapter(codelldb_path, liblldb_path),
+					},
+				}
+			end
 		end,
 		dependencies = {
-			"neovim/nvim-lspconfig",
-			"nvim-lua/plenary.nvim",
 			"mfussenegger/nvim-dap",
 			"rcarriga/nvim-dap-ui",
 		},
 	},
+
+	-- {
+	-- 	"simrat39/rust-tools.nvim",
+	-- 	ft = "rust",
+	-- 	opts = function()
+	-- 		local on_attach = require("plugins.configs.lspconfig").on_attach
+	-- 		local capabilities = require("plugins.configs.lspconfig").capabilities
+	--
+	-- 		require("dap.ext.vscode").load_launchjs(nil, { rt_lldb = { "rust" } })
+	--
+	-- 		local mason_registry = require("mason-registry")
+	-- 		local codelldb_root = mason_registry.get_package("codelldb"):get_install_path() .. "/extension/"
+	-- 		local codelldb_path = codelldb_root .. "adapter/codelldb"
+	-- 		local liblldb_path = codelldb_root .. "lldb/lib/liblldb.dylib"
+	-- 		local adapter = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path)
+	--
+	-- 		local options = {
+	-- 			server = {
+	-- 				capabilities = capabilities,
+	-- 				on_attach = on_attach,
+	-- 				settings = {
+	-- 					["rust-analyzer"] = {
+	-- 						diagnostics = {
+	-- 							disabled = { "inactive-code" },
+	-- 						},
+	-- 						check = {
+	-- 							allTargets = true,
+	-- 							allFeatures = true,
+	-- 							overrideCommand = {
+	-- 								"cargo",
+	-- 								"clippy",
+	-- 								"--workspace",
+	-- 								"--message-format=json",
+	-- 								"--all-targets",
+	-- 								"--all-features",
+	-- 							},
+	-- 						},
+	-- 						["checkOnSave"] = {
+	-- 							["allFeatures"] = true,
+	-- 							["extraArgs"] = { "--all-features" },
+	-- 						},
+	-- 					},
+	-- 				},
+	-- 			},
+	-- 			dap = { adapter = adapter },
+	-- 		}
+	--
+	-- 		require("dap").adapters.rust = adapter
+	--
+	-- 		return options
+	-- 	end,
+	-- 	dependencies = {
+	-- 		"neovim/nvim-lspconfig",
+	-- 		"nvim-lua/plenary.nvim",
+	-- 	},
+	-- },
 
 	-- Debugging
 	{
@@ -151,11 +219,11 @@ local plugins = {
 		event = { "BufReadPost", "BufNewFile" },
 		opts = {
 			-- char = "▏",
-            exclude = {
-                filetypes = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
-            }
+			exclude = {
+				filetypes = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy" },
+			},
 		},
-        main = "ibl",
+		main = "ibl",
 	},
 
 	-- Winbar status line
@@ -240,29 +308,29 @@ local plugins = {
 	-- 		{ "<leader>rl", "<cmd>lua require’sniprun.live_mode’.toggle()<cr>" },
 	-- 	},
 	-- },
-    {
-      "dccsillag/magma-nvim",
-      build = ":UpdateRemotePlugins",
-          keys = {
-              { "<leader>r", "<cmd>MagmaEvaluateOperator<cr>", expr = true, silent = true },
-              { "<leader>r", "<cmd><C-u>MagmaEvaluateVisual", mode = "v" },
-              { "<leader>rr", "<cmd>MagmaEvaluateLine<cr>" },
-              { "<leader>rq", "<cmd>MagmaDelete<cr>" },
-              { "<leader>ro", "<cmd>MagmaShowOutput<cr>" },
-          },
-    },
+	{
+		"dccsillag/magma-nvim",
+		build = ":UpdateRemotePlugins",
+		keys = {
+			{ "<leader>r", "<cmd>MagmaEvaluateOperator<cr>", expr = true, silent = true },
+			{ "<leader>r", "<cmd><C-u>MagmaEvaluateVisual", mode = "v" },
+			{ "<leader>rr", "<cmd>MagmaEvaluateLine<cr>" },
+			{ "<leader>rq", "<cmd>MagmaDelete<cr>" },
+			{ "<leader>ro", "<cmd>MagmaShowOutput<cr>" },
+		},
+	},
 
-    {
-      "pmizio/typescript-tools.nvim",
-      dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-      ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
-      opts = {
-          on_attach = function(client)
-            client.server_capabilities.documentFormattingProvider = false
-            client.server_capabilities.documentRangeFormattingProvider = false
-          end,
-      },
-    },
+	{
+		"pmizio/typescript-tools.nvim",
+		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+		opts = {
+			on_attach = function(client)
+				client.server_capabilities.documentFormattingProvider = false
+				client.server_capabilities.documentRangeFormattingProvider = false
+			end,
+		},
+	},
 
 	-- Neogit for hydra git mode.
 	{
@@ -273,7 +341,7 @@ local plugins = {
 			"nvim-telescope/telescope.nvim", -- Required for fuzz searching
 		},
 		config = true,
-        cmd = "Neogit",
+		cmd = "Neogit",
 	},
 
 	{
@@ -370,9 +438,9 @@ local plugins = {
 				})
 			end
 
-            configure_git_hydra()
+			configure_git_hydra()
 		end,
-        keys = { "<leader>G" },
+		keys = { "<leader>G" },
 	},
 }
 
