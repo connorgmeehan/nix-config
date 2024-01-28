@@ -6,7 +6,7 @@
     pkgs.ccls
     pkgs.deno
     pkgs.rustywind
-    pkgs.unstable.rust-analyzer
+    pkgs.lua-language-server
   ];
   programs.neovim = {
     enable = true;

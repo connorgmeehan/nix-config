@@ -88,6 +88,8 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     unigine-heaven
     ny
 
+    zoom-us
+
     unstable.bruno
 
     nodejs_18
@@ -101,6 +103,5 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     android-tools
 
     fzf
-    clippy
   ];
 }
