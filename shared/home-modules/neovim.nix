@@ -7,6 +7,8 @@
     pkgs.deno
     pkgs.rustywind
     pkgs.lua-language-server
+    pkgs.pkg-config
+    pkgs.cairo
   ];
   programs.neovim = {
     enable = true;
