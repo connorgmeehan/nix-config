@@ -15,7 +15,7 @@ local plugins = {
 				end,
 			},
 			"folke/neodev.nvim",
-            "folke/neoconf.nvim"
+			"folke/neoconf.nvim",
 		},
 		config = function()
 			require("plugins.configs.lspconfig")
@@ -51,10 +51,10 @@ local plugins = {
 		},
 	},
 
-    {
-        "folke/neoconf.nvim",
-        config = true,
-    },
+	{
+		"folke/neoconf.nvim",
+		config = true,
+	},
 
 	{
 		"nvim-neo-tree/neo-tree.nvim",
@@ -116,7 +116,17 @@ local plugins = {
 		end,
 	},
 
-	{ "rafcamlet/nvim-luapad", event = "VeryLazy", cmd = "Luapad" },
+	{
+        "connorgmeehan/paddynvim",
+        event = "VeryLazy",
+        cmd = "Paddy",
+        config = function()
+            local cpml = require('paddynvim.integrations.cpml')
+
+            require('paddynvim').setup({
+                integrations = { cpml }
+            })
+        end },
 
 	{
 		"danymat/neogen",
