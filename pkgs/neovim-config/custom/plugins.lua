@@ -157,35 +157,12 @@ local plugins = {
 		cmd = { "HexDump", "HexAssemble", "HexToggle" },
 	},
 
-	-- {
-	-- 	"metakirby5/codi.vim",
-	-- 	cmd = { "Codi", "CodiNew", "CodiSelect", "CodiExpand" },
-	-- 	config = function()
-	-- 		vim.cmd([[
-	--        let g:codi#interpreters = {
-	--          \ 'deno': {
-	--            \ 'bin': ['deno'],
-	--            \ 'prompt': '^\(>\|\.\.\.\+\) ',
-	--            \ },
-	--         \ }
-	--      ]])
-	-- 	end,
-	-- },
-	-- {
-	-- 	"michaelb/sniprun",
-	-- 	opts = {
-	-- 		live_mode_toggle = "enable", --# live mode toggle, see Usage - Running for more info
-	--      selected_interpreters={"JS_TS_deno"},
-	--      repl_enable={"JS_TS_deno"}
-	-- 	},
-	--    cmd = { "SnipRun", "SnipInfo", "SnipReset", "SnipLive" },
-	-- 	keys = {
-	-- 		{ "<leader>rr", "<cmd>SnipRun<cr>" },
-	-- 		{ "<leader>rr", "<cmd>'<,'>SnipRun<cr>", mode = "v" },
-	-- 		{ "<leader>rR", "<cmd>lua require’sniprun’.reset()<cr>" },
-	-- 		{ "<leader>rl", "<cmd>lua require’sniprun.live_mode’.toggle()<cr>" },
-	-- 	},
-	-- },
+    {
+      'mrcjkb/rustaceanvim',
+      version = '^4', -- Recommended
+      ft = { 'rust' },
+    },
+
 	{
 		"dccsillag/magma-nvim",
 		build = ":UpdateRemotePlugins",
