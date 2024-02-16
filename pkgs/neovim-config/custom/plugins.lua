@@ -52,8 +52,16 @@ local plugins = {
 	},
 
 	{
-		"folke/neoconf.nvim",
-		config = true,
+		"folke/neodev.nvim",
+		opts = {
+            override = function(root_dir, library)
+                print(root_dir .. " " .. vim.inspect(library))
+                if root_dir:find("paddynvim", 1, true) == 1 then
+                    library.enabled = true
+                    library.plugins = true
+                end
+            end,
+        },
 	},
 
 	{
@@ -117,16 +125,19 @@ local plugins = {
 	},
 
 	{
-        "connorgmeehan/paddynvim",
-        event = "VeryLazy",
-        cmd = "Paddy",
-        config = function()
-            local cpml = require('paddynvim.integrations.cpml')
+		"connorgmeehan/paddynvim",
+		branch = "feat/impl-draw-integration",
+		event = "VeryLazy",
+		cmd = "Paddy",
+		config = function()
+			local cpml = require("paddynvim.integrations.cpml")
+			local draw = require("paddynvim.integrations.draw")
 
-            require('paddynvim').setup({
-                integrations = { cpml }
-            })
-        end },
+			require("paddynvim").setup({
+				integrations = { cpml, draw },
+			})
+		end,
+	},
 
 	{
 		"danymat/neogen",
