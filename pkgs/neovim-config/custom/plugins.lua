@@ -63,6 +63,11 @@ local plugins = {
             end,
         },
 	},
+	{
+		"folke/neoconf.nvim",
+         cmd = "Neoconf",
+        config = true,
+	},
 
 	{
 		"nvim-neo-tree/neo-tree.nvim",

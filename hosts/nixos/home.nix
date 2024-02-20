@@ -25,6 +25,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     ../../shared/home-modules/neovim.nix
     ../../shared/home-modules/git.nix
     ../../shared/home-modules/lazygit.nix
+    ../../shared/home-modules/tmux.nix
     ./home-modules/gnome.nix
     ./home-modules/chromium.nix
     ./home-modules/vscode.nix
