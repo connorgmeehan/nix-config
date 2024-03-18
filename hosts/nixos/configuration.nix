@@ -202,6 +202,8 @@
     };
   };
 
+  services.mullvad-vpn.enable = true;
+
   # Wayland support for new electron apps
   nixpkgs.config.chromium.commandLineArgs = "--enable-features=UseOzonPlatform --ozone-platform=wayland";
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
