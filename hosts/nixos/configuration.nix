@@ -67,7 +67,10 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
+
+  # Use performance mode
+  powerManagement.cpuFreqGovernor = "performance";
 
   # Kernel Modules
   boot.kernelModules = [ "uinput" "i2c-dev" "i2c-i801" ];
@@ -180,6 +183,8 @@
     escape-fsh
 
     protontricks
+
+    mullvad-vpn
   ];
 
   ## PROGRAMS CONFIG
