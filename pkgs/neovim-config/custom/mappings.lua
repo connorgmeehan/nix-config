@@ -45,6 +45,8 @@ M.general = {
     ["<leader>e"] = { "<cmd>:Neotree filesystem reveal left toggle<CR>", "File tree"},
     ["<leader>E"] = { "<cmd>:Neotree filesystem reveal left<CR>", "Focus tree"},
 
+    ["<leader>fp"] = { "<cmd>:Telescope resume<CR>", "Previous Telescope"},
+
     --
     ["<leader>cd"] = { "<cmd>Telescope lsp_definitions<CR>", "Format buffer" },
     ["<leader>ct"] = { "<cmd>Telescope lsp_type_definitions<CR>", "Go typedef" },
