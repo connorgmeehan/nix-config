@@ -104,5 +104,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     android-tools
 
     fzf
+
+    godot_4
   ];
 }
