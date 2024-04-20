@@ -67,7 +67,6 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # Use performance mode
   powerManagement.cpuFreqGovernor = "performance";
@@ -109,7 +108,7 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.displayManager.gdm.wayland = false;
+  # services.xserver.displayManager.gdm.wayland = false;
 
   # Configure keymap in X11
   services.xserver = {
@@ -238,7 +237,7 @@
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 
     # Fonts
   fonts.fonts = with pkgs; [
