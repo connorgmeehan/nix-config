@@ -4,7 +4,7 @@ local capabilities = require("plugins.configs.lspconfig").capabilities
 local lspconfig = require "lspconfig"
 
 -- if you just want default config for the servers then put them in a table
-local servers = { "html", "cssls", "ccls", "tailwindcss", "volar", "lua_ls", "svelte", "yamlls", "astro", "nil_ls", "jsonls", "wgsl_analyzer", "bashls" }
+local servers = { "html", "cssls", "clangd", "tailwindcss", "volar", "lua_ls", "svelte", "yamlls", "astro", "nil_ls", "jsonls", "wgsl_analyzer", "bashls" }
 
 local config_extras = {
   volar = function(config)
