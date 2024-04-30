@@ -2,6 +2,7 @@
 
 let
   custom = ./custom;
+  initLuaSrc = ./init.lua;
 in
 stdenv.mkDerivation {
   pname = "nvchad";
@@ -10,15 +11,16 @@ stdenv.mkDerivation {
   src = pkgs.fetchFromGitHub {
     owner = "NvChad";
     repo = "NvChad";
-    rev = "13e9b0f458c3e5e95ac05a10822f26dbb1aa03cb";
-    sha256 = "sha256-fliUVs7vNozCyMwA40iTCHYt5PXYPF8A0dUUxMkNYho=";
+    rev = "f8e6c59985f1d5f820f051395e88064a8d16ef2a";
+    sha256 = "sha256-pE3len10QUOXFQzbL8YWfPjmWjJPepBkY29SZO88Rus=";
   };
 
   installPhase = ''
     mkdir $out
+    cp ${initLuaSrc} "$out/init.lua"
     cp -r * "$out/"
     mkdir -p "$out/lua/custom"
-    cp -r ${custom}/* "$out/lua/custom/"
+    cp -r ${custom}/* "$out/lua"
   '';
 
   meta = with lib; {

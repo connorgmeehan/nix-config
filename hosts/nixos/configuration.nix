@@ -67,7 +67,9 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+
+  # Use performance mode
+  powerManagement.cpuFreqGovernor = "performance";
 
   # Kernel Modules
   boot.kernelModules = [ "uinput" "i2c-dev" "i2c-i801" ];
@@ -180,6 +182,8 @@
     escape-fsh
 
     protontricks
+
+    mullvad-vpn
   ];
 
   ## PROGRAMS CONFIG
@@ -201,6 +205,8 @@
       ];
     };
   };
+
+  services.mullvad-vpn.enable = true;
 
   # Wayland support for new electron apps
   nixpkgs.config.chromium.commandLineArgs = "--enable-features=UseOzonPlatform --ozone-platform=wayland";
@@ -231,10 +237,10 @@
   };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 
     # Fonts
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "Hack" "FiraCode" "DroidSansMono" ]; })
   ];
 }

@@ -76,7 +76,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
   systemd.user.startServices = "sd-switch";
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "23.05";
+  home.stateVersion = "23.11";
 
   home.packages = with pkgs; [
     zsh
@@ -104,5 +104,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     android-tools
 
     fzf
+
+    godot_4
   ];
 }

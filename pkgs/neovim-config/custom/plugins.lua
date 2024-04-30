@@ -1,4 +1,4 @@
-local overrides = require("custom.configs.overrides")
+local overrides = require("configs.overrides")
 
 ---@type NvPluginSpec[]
 local plugins = {
@@ -9,17 +9,16 @@ local plugins = {
 		dependencies = {
 			-- format & linting
 			{
-				"jose-elias-alvarez/null-ls.nvim",
+				"nvimtools/none-ls.nvim",
 				config = function()
-					require("custom.configs.null-ls")
+					require("configs.null-ls")
 				end,
 			},
 			"folke/neodev.nvim",
 			"folke/neoconf.nvim",
 		},
 		config = function()
-			require("plugins.configs.lspconfig")
-			require("custom.configs.lspconfig")
+			require("configs.lspconfig")
 		end, -- Override to setup mason-lspconfig
 	},
 
@@ -28,6 +27,58 @@ local plugins = {
 		"williamboman/mason.nvim",
 		opts = overrides.mason,
 	},
+
+    -- load luasnips + cmp related in insert mode only
+    {
+    "hrsh7th/nvim-cmp",
+        event = "InsertEnter",
+        dependencies = {
+            {
+                -- snippet plugin
+                "L3MON4D3/LuaSnip",
+                dependencies = "rafamadriz/friendly-snippets",
+                opts = { history = true, updateevents = "TextChanged,TextChangedI" },
+                config = function(_, opts)
+                    require("luasnip").config.set_config(opts)
+                    require "nvchad.configs.luasnip"
+                end,
+            },
+
+            -- autopairing of (){}[] etc
+            {
+                "windwp/nvim-autopairs",
+                opts = {
+                    fast_wrap = {},
+                    disable_filetype = { "TelescopePrompt", "vim" },
+                },
+                config = function(_, opts)
+                    require("nvim-autopairs").setup(opts)
+
+                    -- setup cmp for autopairs
+                    local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+                    require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+                end,
+            },
+
+            -- cmp sources plugins
+            {
+                "saadparwaiz1/cmp_luasnip",
+                "hrsh7th/cmp-nvim-lua",
+                "hrsh7th/cmp-nvim-lsp",
+                "hrsh7th/cmp-buffer",
+                "hrsh7th/cmp-path",
+                "hrsh7th/cmp-nvim-lsp-signature-help"
+            },
+        },
+        opts = function()
+            local cfg = require "nvchad.configs.cmp";
+            table.insert(cfg.sources, { name = "nvim_lsp_signature_help" })
+            return cfg
+        end,
+        config = function(_, opts)
+          require("cmp").setup(opts)
+        end,
+    },
 
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -79,7 +130,7 @@ local plugins = {
 		},
 		cmd = "Neotree",
 		config = function()
-			require("custom.configs.neo-tree")
+			require("configs.neo-tree")
 		end,
 	},
 

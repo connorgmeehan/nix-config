@@ -1,10 +1,5 @@
--- local autocmd = vim.api.nvim_create_autocmd
+require "nvchad.options"
 
--- Auto resize panes when resizing nvim window
--- autocmd("VimResized", {
---   pattern = "*",
---   command = "tabdo wincmd =",
--- })
 vim.opt.relativenumber = true
 vim.opt.foldlevel = 20
 vim.opt.foldmethod = "expr"

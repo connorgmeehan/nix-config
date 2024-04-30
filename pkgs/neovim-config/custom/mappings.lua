@@ -1,103 +1,62 @@
+require("nvchad.mappings")
+
+local map = vim.keymap.set
+
 ---@type MappingsTable
-local M = {}
+
+map("n", "<leader>s", "<CMD>w<CR>", { desc = "Save file" })
+map("n", "<leader>-", "<CMD>split<CR>", { desc = "Hori Split" })
+map("n", "<leader>\\", "<CMD>vsplit<CR>", { desc = "Vert Split" })
+map("n", "<leader>q", "<CMD>q<CR>", { desc = "Quit buffer" })
+-- LSP
+map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", { desc = "Go definitions" })
+map("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "Go type defs" })
+map("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "Go references" })
+map("n", "gs", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Go doc symbols" })
+map("n", "gS", "<cmd>Telescope lsp_workspace_symbols<CR>", { desc = "Go workspace symbols" })
+
+-- Tree
+map("n", "<leader>e", "<cmd>:Neotree filesystem reveal left toggle<CR>", { desc = "File tree" })
+map("n", "<leader>E", "<cmd>:Neotree filesystem reveal left<CR>", { desc = "Focus tree" })
+
+map("n", "<leader>fp", "<cmd>:Telescope resume<CR>", { desc = "Previous Telescope" })
+
 --
--- M.groups = {
---   n = {
---     ["<leader>"] = {
---       c = { name = "code" },
---       d = { name = "dap" },
---       f = { name = "files" },
---       g = { name = "git" },
---       l = { name = "live server" },
---       p = { name = "terms" },
---       r = { name = "refactor" },
---       t = { name = "telescope" },
---       w = { name = "which-key/workspace" },
---     },
---   },
---   v = {
---     ["<leader>"] = {
---       r = { name = "refactor" },
---       t = { name = "markdown tables" },
---     }
---   }
--- }
-M.disabled = {
-  ["<C-n>"] = "",
-  ["<leader>e"] = "",
-}
-
-M.general = {
-  n = {
-    -- Core
-    ["<leader>s"] = { "<CMD>w<CR>", "Save file", opts = { nowait = true } },
-    ["<leader>-"] = { "<CMD>split<CR>", "Hori Split", opts = { nowait = true } },
-    ["<leader>\\"] = { "<CMD>vsplit<CR>", "Vert Split", opts = { nowait = true } },
-    ["<leader>q"] = { "<CMD>q<CR>", "Quit buffer", opts = { nowait = true } },
-    -- LSP
-    ["gd"] = { "<cmd>Telescope lsp_definitions<CR>", "Go definitions" },
-    ["gt"] = { "<cmd>Telescope lsp_type_definitions<CR>", "Go type defs" },
-    ["gr"] = { "<cmd>Telescope lsp_references<CR>", "Go references" },
-    ["gs"] = { "<cmd>Telescope lsp_document_symbols<CR>", "Go doc symbols" },
-    ["gS"] = { "<cmd>Telescope lsp_workspace_symbols<CR>", "Go workspace symbols" },
-
-    -- Tree
-    ["<leader>e"] = { "<cmd>:Neotree filesystem reveal left toggle<CR>", "File tree"},
-    ["<leader>E"] = { "<cmd>:Neotree filesystem reveal left<CR>", "Focus tree"},
-
-    --
-    ["<leader>cd"] = { "<cmd>Telescope lsp_definitions<CR>", "Format buffer" },
-    ["<leader>ct"] = { "<cmd>Telescope lsp_type_definitions<CR>", "Go typedef" },
-    ["<leader>cf"] = { vim.lsp.buf.format, "Format buffer" },
-    ["<leader>ca"] = { vim.lsp.buf.code_action, "Code actions" },
-    ["<leader>cr"] = { vim.lsp.buf.rename, "Rename" },
-    ["<leader>cg"] = {
-      function()
-        require("neogen").generate({})
-      end,
-      "Generate docs",
-    },
-    ["<C-n>"] = { vim.diagnostic.goto_next, "Next diagnostic" },
-    ["<C-p>"] = { vim.diagnostic.goto_prev, "Next diagnostic" },
-    ["<S-k>"] = { vim.lsp.buf.hover, "Show hover doc" },
-    -- Git signs
-    ["<leader>gR"] = { "<cmd>lua require'gitsigns'.reset_hunk()<CR>", "Reset Hunk" },
-    ["<leader>gn"] = { "<cmd>lua require'gitsigns'.next_hunk()<CR>", "Next Hunk" },
-    ["<leader>gp"] = { "<cmd>lua require'gitsigns'.prev_hunk()<CR>", "Prev Hunk" },
-    -- Tree
-    -- ["<leader>E"] = { "<cmd> NvimTreeFocus <CR>", "focus nvimtree" },
-    -- ["<leader>e"] = { "<cmd> NvimTreeToggle <CR>", "toggle nvimtree" },
-    -- Debugging
-    ["<leader>db"] = { "<CMD> DapToggleBreakpoint <CR>", "Toggle Breakpoint" },
-    ["<leader>dn"] = { "<CMD> DapStepOver <CR>", "Step Over" },
-    ["<leader>ds"] = {
-      function()
-        require("dapui").open()
-      end,
-      "Open Debug UI",
-    },
-    ["<leader>dq"] = {
-      function()
-        local session = require("dap").session()
-        if session then
-          require("dap").disconnect(nil, function ()
-            require("dapui").close()
-          end)();
-        else
-          require("dapui").close()
-        end
-      end,
-      "Open Debug UI",
-    },
-    ["<leader>dc"] = { "<cmd>lua require('dap').continue()<CR>", "Continue" },
-    ["<leader>dr"] = { "<cmd>lua require('dap').run_to_cursor()<CR>", "Run to cursor" },
-    ["<leader>du"] = { "<cmd>lua require('dap').up()<CR>", "Up Stack" },
-    ["<leader>dd"] = { "<cmd>lua require('dap').down()<CR>", "Down Stack" },
-    ["<leader>di"] = { "<cmd>lua require('dap').step_in()<CR>", "Step in" },
-    ["<leader>do"] = { "<cmd>lua require('dap').step_out()<CR>", "Step out" },
-  },
-}
-
--- more keybinds!
-
-return M
+map("n", "<leader>cd", "<cmd>Telescope lsp_definitions<CR>", { desc = "Format buffer" })
+map("n", "<leader>ct", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "Go typedef" })
+map("n", "<leader>cf", vim.lsp.buf.format, { desc = "Format buffer" })
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
+map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename" })
+map("n", "<leader>cg", function() require("neogen").generate({}) end, { desc = "Generate docs"})
+map("n", "<C-n>", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+map("n", "<C-p>", vim.diagnostic.goto_prev, { desc = "Next diagnostic" })
+map("n", "<S-k>", vim.lsp.buf.hover, { desc = "Show hover doc" })
+-- Git signs
+map("n", "<leader>gR", "<cmd>lua require'gitsigns'.reset_hunk()<CR>", { desc = "Reset Hunk" })
+map("n", "<leader>gn", "<cmd>lua require'gitsigns'.next_hunk()<CR>", { desc = "Next Hunk" })
+map("n", "<leader>gp", "<cmd>lua require'gitsigns'.prev_hunk()<CR>", { desc = "Prev Hunk" })
+-- Tree
+-- ["<leader>E"] = { "<cmd> NvimTreeFocus <CR>", "focus nvimtree" },
+-- ["<leader>e"] = { "<cmd> NvimTreeToggle <CR>", "toggle nvimtree" },
+-- Debugging
+map("n", "<leader>db", "<CMD> DapToggleBreakpoint <CR>", { desc = "Toggle Breakpoint" })
+map("n", "<leader>dn", "<CMD> DapStepOver <CR>", { desc = "Step Over" })
+map("n", "<leader>ds", function() require("dapui").open() end, {desc = "Open Debug UI"})
+map("n", "<leader>dq", function()
+    local session = require("dap").session()
+    if session then
+      require("dap").disconnect(nil, function ()
+        require("dapui").close()
+      end)();
+    else
+      require("dapui").close()
+    end
+  end,
+  { desc = "Open Debug UI" }
+)
+map("n", "<leader>dc", "<cmd>lua require('dap').continue()<CR>", { desc = "Continue" })
+map("n", "<leader>dr", "<cmd>lua require('dap').run_to_cursor()<CR>", { desc = "Run to cursor" })
+map("n", "<leader>du", "<cmd>lua require('dap').up()<CR>", { desc = "Up Stack" })
+map("n", "<leader>dd", "<cmd>lua require('dap').down()<CR>", { desc = "Down Stack" })
+map("n", "<leader>di", "<cmd>lua require('dap').step_in()<CR>", { desc = "Step in" })
+map("n", "<leader>do", "<cmd>lua require('dap').step_out()<CR>", { desc = "Step out" })
