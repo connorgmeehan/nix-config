@@ -20,6 +20,7 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
       keybindPrefix = "cmd+";
     } ))
 
+    ../../shared/home-modules/tmux.nix
     ../../shared/home-modules/zsh.nix
     ../../shared/home-modules/neovim.nix
     ../../shared/home-modules/git.nix
