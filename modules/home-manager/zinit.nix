@@ -43,28 +43,5 @@ in {
       default = "${cfg.package}/share/zinit";
       description = "Path to zinit entry file.";
     };
-
-    config = mkIf cfg.enable {
-      home.packages = [ config.package ];
-
-      programs.zsh.initExtraBeforeCompInit = ''
-        export ZINIT_HOME=${cfg.zinitDir}
-        source "${cfg.zinitDir}/zinit.zsh"
-
-        ${optionalString (cfg.plugins != [ ]) ''
-          zinit for \
-          ${concatStrings (map (plugin: ''\
-            ${
-              optionalString (plugin.ice != [ ]) ''\
-                ${concatStrings (map (ice: "${ice} \\\n") plugin.ice)}
-              ''
-            }
-            zinit light "${plugin.name}"
-          '') cfg.plugins)}
-        ''}
-
-      '';
-
-    };
   };
 }
