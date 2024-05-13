@@ -2,6 +2,7 @@
 
 {
   home.packages = [
+    pkgs.fzf
     pkgs.unzip
     pkgs.ccls
     pkgs.deno
@@ -9,6 +10,7 @@
     pkgs.lua-language-server
     pkgs.pkg-config
     pkgs.cairo
+    pkgs.lldb_14
   ];
   programs.neovim = {
     enable = true;
