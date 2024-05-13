@@ -5,6 +5,10 @@ let
 
   iceToStr = ices: "zinit ice ${concatStrings (map (ice: " ${ice}") ices)}";
 in {
+    home.packages = with pkgs; [
+      fnm
+    ];
+
     programs.direnv = {
           enable = true;
           enableZshIntegration = true; # see note on other shells below
@@ -43,6 +47,7 @@ in {
               # PNPM setup
               export PATH="$PATH":${config.home.homeDirectory}/.local/share/pnpm/
               export PNPM_HOME="${config.home.homeDirectory}/.local/share/pnpm/"
+              eval "$(fnm env --use-on-cd)"
         '';
 
         zinit = {
