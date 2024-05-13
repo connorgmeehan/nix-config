@@ -16,6 +16,7 @@
     ./modules/kanata.nix
     ./modules/nvidia.nix
     ./modules/android-dev.nix
+    ./modules/samba.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
@@ -80,6 +81,9 @@
   virtualisation.docker.rootless.enable = true;
   virtualisation.docker.rootless.setSocketVariable = true;
   virtualisation.spiceUSBRedirection.enable = true;
+
+  services.spice-webdavd.enable = true;
+  services.spice-vdagentd.enable = true;
 
   # Enable networking
   networking.networkmanager.enable = true;
