@@ -2,6 +2,7 @@
 
 {
   home.packages = [
+    pkgs.ripgrep
     pkgs.fzf
     pkgs.unzip
     pkgs.ccls
