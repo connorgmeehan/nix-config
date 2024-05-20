@@ -15,10 +15,6 @@ in {
           nix-direnv.enable = true;
     };
 
-    home.packages = with pkgs; [
-        fnm
-    ];
-
     programs.zsh = {
         enable = true;
         shellAliases = {
