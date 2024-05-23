@@ -356,6 +356,7 @@ local plugins = {
 
 	{
 		"alexghergh/nvim-tmux-navigation",
+        opts = true,
 		keys = {
 			{ "<C-h>", "<cmd>NvimTmuxNavigateLeft<cr>", silent = true },
 			{ "<C-j>", "<cmd>NvimTmuxNavigateDown<cr>", silent = true },

@@ -1,10 +1,6 @@
 { config, pkgs, lib, ... }:
 with lib;
-let
-  cfg = config.programs.zsh.zinit;
-
-  iceToStr = ices: "zinit ice ${concatStrings (map (ice: " ${ice}") ices)}";
-in {
+{
     home.packages = with pkgs; [
       fnm
     ];

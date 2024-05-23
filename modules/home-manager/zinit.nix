@@ -3,7 +3,52 @@
 with lib;
 
 let
+
   cfg = config.programs.zsh.zinit;
+
+  arglessIces = [
+    "aliases"
+    "blockf"
+    "cloneonly"
+    "completions"
+    "countdown"
+    "light-mode"
+    "link"
+    "lucid"
+    "nocd"
+    "nocompile"
+    "nocompletions"
+    "notify"
+    "reset"
+    "reset-prompt"
+    "run-atpull"
+    "service"
+    "silent"
+    "svn"
+    "wait"
+
+    "sh"
+    "bash"
+    "csh"
+    "ksh"
+  ];
+
+  iceToStr = name: value:
+    if (name == "wait" || name == "lucid") && value == "false" then
+      ""
+    else if name == "wait" && value != "0" then
+      "wait'${value}'"
+    else if builtins.elem name arglessIces then
+      "${name}"
+    else
+      "${name}'${value}'";
+
+  icesToStr = ices: concatStringsSep " " ices;
+
+  defaultIces = {
+    wait = "0";
+    lucid = "true";
+  };
 
   pluginModule = types.submodule ({ config, ... }: {
     options = {
@@ -13,35 +58,107 @@ let
       };
 
       ice = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
-        description = "The plugin ice config as a list.";
+        type = types.attrsOf types.str;
+        default = {
+          wait = "0";
+          lucid = "true";
+        };
+        description = "Ices to apply to the plugin.";
       };
 
-      strategy = mkOption {
-        type = types.str;
-        default = "light";
-        description = "The load strategy (light|load)";
+      snippet = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to load the plugin with zinit snippet.";
       };
     };
 
   });
+
 in {
   options.programs.zsh.zinit = {
-    enable = mkEnableOption "zinit - Flexible and fast ZSH plugin manager";
+    enable = mkEnableOption "zinit - flexible and fast zsh plugin manager";
 
     package = mkPackageOption pkgs "zinit" { };
 
     plugins = mkOption {
       default = [ ];
       type = types.listOf pluginModule;
-      description = "List of init plugins.";
+      description = "List of zinit plugins.";
     };
 
-    zinitDir = mkOption {
-      type = types.str;
-      default = "${cfg.package}/share/zinit";
-      description = "Path to zinit entry file.";
+    zinitHome = mkOption {
+      type = types.path;
+      default = "${config.xdg.dataHome}/zinit";
+      defaultText = "~/.local/share/zinit";
+      apply = toString;
+      description = "Path to zinit home directory.";
+    };
+
+    enableSyntaxCompletionsSuggestions = mkEnableOption
+      "Enable fast-syntax-highlighting, zsh-completions and zsh-autosuggestions.";
+  };
+
+  config = let
+    waitLucidPlugins = builtins.filter (plugin:
+      plugin.ice == {
+        wait = "0";
+        lucid = "true";
+      }) cfg.plugins;
+    otherPlugins = builtins.filter (plugin:
+      plugin.ice != {
+        wait = "0";
+        lucid = "true";
+      }) cfg.plugins;
+  in mkIf cfg.enable {
+    home.packages = [ cfg.package ]
+      ++ optional cfg.enableSyntaxCompletionsSuggestions
+      pkgs.nix-zsh-completions;
+
+    programs.zsh = {
+      syntaxHighlighting.enable =
+        mkIf cfg.enableSyntaxCompletionsSuggestions false;
+
+      initExtraBeforeCompInit = ''
+        export ZINIT_HOME=${cfg.zinitHome}/zinit
+
+        source ${pkgs.zinit}/share/zinit/zinit.zsh
+        ${
+          optionalString (otherPlugins != [ ]) ''
+            ${concatStrings (map (plugin: ''
+              ${optionalString (plugin.ice != [ ]) "zinit ice ${
+                concatStringsSep " "
+                (mapAttrsToList iceToStr (defaultIces // plugin.ice))
+              }"}
+              zinit ${
+                if plugin.snippet then "snippet" else "load"
+              } "${plugin.name}"
+            '') otherPlugins)}
+          ''
+        }${
+          optionalString (waitLucidPlugins != [ ]) ''
+            zinit wait lucid for \
+              ${
+                concatStringsSep ''
+                   \
+                  	'' (map (plugin: plugin.name) waitLucidPlugins)
+              }
+          ''
+        }
+      '';
+
+      initExtra = ''
+        ${optionalString cfg.enableSyntaxCompletionsSuggestions ''
+          zinit wait lucid for \
+            atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+                zdharma-continuum/fast-syntax-highlighting \
+            blockf atpull'zinit creinstall -q .' \
+                zsh-users/zsh-completions \
+            atload"_zsh_autosuggest_start" \
+                zsh-users/zsh-autosuggestions
+        ''}
+      '';
     };
   };
 }
+
