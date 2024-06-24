@@ -19,9 +19,6 @@ with lib;
               ns = "nix-shell --command zsh";
               ll = "ls -la";
         };
-        initExtraFirst = ''
-              source ~/.p10k.zsh
-        '';
 
         enableCompletion = false;
 
