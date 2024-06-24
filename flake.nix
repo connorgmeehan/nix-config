@@ -101,6 +101,16 @@
             ./hosts/mbp/home.nix
           ];
         };
+        # MacOS Install
+        "connormeehan@DrawboardMBP" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            # > Our main home-manager configuration file <
+            ./hosts/drawboard-mbp/home.nix
+          ];
+        };
+
       };
     };
 }
