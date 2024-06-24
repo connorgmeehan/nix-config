@@ -78,6 +78,8 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "23.11";
 
+  programs.obs-studio.enable = true;
+
   home.packages = with pkgs; [
     zsh
     slack
