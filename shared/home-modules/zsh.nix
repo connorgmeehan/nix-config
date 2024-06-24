@@ -1,10 +1,5 @@
-{ config, pkgs, lib, ... }:
-with lib;
+{ config, ... }:
 {
-    home.packages = with pkgs; [
-      fnm
-    ];
-
     programs.direnv = {
           enable = true;
           enableZshIntegration = true; # see note on other shells below
@@ -32,9 +27,6 @@ with lib;
               # PNPM setup
               export PATH="$PATH":${config.home.homeDirectory}/.local/share/pnpm/
               export PNPM_HOME="${config.home.homeDirectory}/.local/share/pnpm/"
-
-              # FNM setup
-              eval "$(fnm env --use-on-cd)"
         '';
 
         zinit = {
