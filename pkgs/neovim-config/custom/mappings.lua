@@ -8,12 +8,7 @@ map("n", "<leader>s", "<CMD>w<CR>", { desc = "Save file" })
 map("n", "<leader>-", "<CMD>split<CR>", { desc = "Hori Split" })
 map("n", "<leader>\\", "<CMD>vsplit<CR>", { desc = "Vert Split" })
 map("n", "<leader>q", "<CMD>q<CR>", { desc = "Quit buffer" })
--- LSP
-map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", { desc = "Go definitions" })
-map("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "Go type defs" })
-map("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "Go references" })
-map("n", "gs", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "Go doc symbols" })
-map("n", "gS", "<cmd>Telescope lsp_workspace_symbols<CR>", { desc = "Go workspace symbols" })
+map("n", "<leader>,", "<cmd>Telescope buffers<cr>", { desc = "Quit buffer" })
 
 -- Tree
 map("n", "<leader>e", "<cmd>:Neotree filesystem reveal left toggle<CR>", { desc = "File tree" })
@@ -21,16 +16,10 @@ map("n", "<leader>E", "<cmd>:Neotree filesystem reveal left<CR>", { desc = "Focu
 
 map("n", "<leader>fp", "<cmd>:Telescope resume<CR>", { desc = "Previous Telescope" })
 
---
-map("n", "<leader>cd", "<cmd>Telescope lsp_definitions<CR>", { desc = "Format buffer" })
-map("n", "<leader>ct", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "Go typedef" })
-map("n", "<leader>cf", vim.lsp.buf.format, { desc = "Format buffer" })
-map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
-map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename" })
-map("n", "<leader>cg", function() require("neogen").generate({}) end, { desc = "Generate docs"})
-map("n", "<C-n>", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
-map("n", "<C-p>", vim.diagnostic.goto_prev, { desc = "Next diagnostic" })
-map("n", "<S-k>", vim.lsp.buf.hover, { desc = "Show hover doc" })
+-- LSP
+-- Keybinds now set in [lspconfig config](./configs/lspconfig.lua) due to 
+-- https://github.com/NvChad/NvChad/issues/2854
+
 -- Git signs
 map("n", "<leader>gR", "<cmd>lua require'gitsigns'.reset_hunk()<CR>", { desc = "Reset Hunk" })
 map("n", "<leader>gn", "<cmd>lua require'gitsigns'.next_hunk()<CR>", { desc = "Next Hunk" })

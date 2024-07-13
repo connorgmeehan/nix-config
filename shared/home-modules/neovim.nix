@@ -2,7 +2,9 @@
 
 {
   home.packages = [
-    pkgs.nodejs_20
+    pkgs.nodejs_20 # For installing extra language servers with mason
+    pkgs.nodePackages.typescript # Global typescript installation for tsserver
+
     pkgs.ripgrep
     pkgs.fzf
     pkgs.unzip

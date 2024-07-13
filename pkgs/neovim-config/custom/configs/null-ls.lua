@@ -10,7 +10,7 @@ local sources = {
   -- webdev stuff
   -- b.formatting.deno_fmt, -- choosed deno for ts/js files cuz its very fast!
   b.formatting.prettier,
-  b.formatting.rustywind,
+  -- b.formatting.rustywind, -- Disabled for work
 
   -- Lua
   b.formatting.stylua,
