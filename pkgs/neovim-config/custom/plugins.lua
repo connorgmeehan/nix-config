@@ -2,6 +2,10 @@ local overrides = require("configs.overrides")
 
 ---@type NvPluginSpec[]
 local plugins = {
+    {
+      "stevearc/conform.nvim",
+      disable = true,
+    },
 
 	-- Override plugin definition options
 	{
