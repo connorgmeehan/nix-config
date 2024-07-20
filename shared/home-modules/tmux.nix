@@ -65,6 +65,8 @@ in
         bind-key j select-pane -D
         bind-key k select-pane -U
         bind-key l select-pane -R
+        bind-key - split-window -v
+        bind-key \\ split-window -h
 
         # forget the find window.  That is for chumps
         bind-key -r s run-shell "tmux neww tms"
