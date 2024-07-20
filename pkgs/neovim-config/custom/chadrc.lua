@@ -1,6 +1,8 @@
 ---@type ChadrcConfig
 local M = {}
 
+M.lsp = { signature = true }
+
 -- Path to overriding theme and highlights files
 
 M.ui = {
