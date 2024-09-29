@@ -3,8 +3,8 @@ local overrides = require("configs.overrides")
 ---@type NvPluginSpec[]
 local plugins = {
     {
-      "stevearc/conform.nvim",
-      disable = true,
+        "stevearc/conform.nvim",
+        disable = true,
     },
     -- Override plugin definition options
     {
@@ -95,6 +95,24 @@ local plugins = {
     },
 
     {
+        "nvim-neotest/neotest",
+        dependencies = {
+            "nvim-neotest/nvim-nio",
+            "nvim-lua/plenary.nvim",
+            "antoinemadec/FixCursorHold.nvim",
+            "nvim-treesitter/nvim-treesitter",
+            "marilari88/neotest-vitest",
+        },
+        config = function()
+            require("neotest").setup({
+                adapters = {
+                    require("neotest-vitest"),
+                }
+            })
+        end
+    },
+
+    {
         "nvim-telescope/telescope.nvim",
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
@@ -104,12 +122,6 @@ local plugins = {
                 enabled = false,
                 build = "mkdir -p build && cd build && cmake ../CMakeList.txt && make",
             },
-            {
-                "natecraddock/telescope-zf-native.nvim",
-                config = function()
-                    require("telescope").load_extension("zf-native")
-                end
-            }
         },
         opts = {
             defaults = {
@@ -163,7 +175,7 @@ local plugins = {
             },
 
             extensions_list = { "themes", "terms" },
-            extensions = {"zf-native"},
+            extensions = { "zf-native" },
         }
     },
 
@@ -235,10 +247,10 @@ local plugins = {
         config = function()
             require("mini.surround").setup({
                 mappings = {
-                    add = "ys", -- Add surrounding in Normal and Visual modes
-                    delete = "ds", -- Delete surrounding
+                    add = "ys",       -- Add surrounding in Normal and Visual modes
+                    delete = "ds",    -- Delete surrounding
                     highlight = "vs", -- Highlight surrounding
-                    replace = "cs", -- Replace surrounding
+                    replace = "cs",   -- Replace surrounding
                 },
             })
             require("mini.comment").setup()
@@ -300,8 +312,8 @@ local plugins = {
     {
         "NeogitOrg/neogit",
         dependencies = {
-            "nvim-lua/plenary.nvim", -- required
-            "sindrets/diffview.nvim", -- optional - Diff integration
+            "nvim-lua/plenary.nvim",         -- required
+            "sindrets/diffview.nvim",        -- optional - Diff integration
             "nvim-telescope/telescope.nvim", -- Required for fuzz searching
         },
         config = true,
