@@ -37,6 +37,10 @@ in
         tmux-which-key
       ];
       extraConfig = '' 
+        # Fix neovim colours
+        set-option -g default-terminal "screen-256color"
+        set-option -sa terminal-overrides ',xterm-256color:RGB' 
+
         # used for less common options, intelligently combines if defined in multiple places.
         set -g mouse on # Allow mouse to scroll
         # Emacs key bindings in tmux command prompt (prefix + :) are better than
