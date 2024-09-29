@@ -23,9 +23,8 @@ stdenvNoCC.mkDerivation rec {
     # Installing backward compatibility layer
     install -m0644 zinit{,-side,-install,-autoload}.zsh "$outdir"
     install -m0755 share/git-process-output.zsh "$outdir"
-    # Man pages
-    mkdir "$outdir/doc"
-    install -m0644 doc/zinit.1 "$outdir/doc/zinit.1"
+
+    installManPage doc/zinit.1
 
     # Zplugin autocompletion
     installShellCompletion --zsh _zinit
