@@ -4,47 +4,23 @@ local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
 
-local map = vim.keymap.set
 local nomap = vim.keymap.del
 local on_attach_with_keybinds = function(client, bufnr)
     on_attach(client, bufnr)
-    vim.schedule(function()
+    local keymaps_list = vim.api.nvim_get_keymap('n')
+    local mappings_table = {}
+      for _, mapping in ipairs(keymaps_list) do
+        mappings_table[mapping.lhs] = mapping
+      end
+    if mappings_table['gr'] then
         nomap("n", "gr", { buffer = bufnr })
+    end
+    if mappings_table['gd'] then
         nomap("n", "gd", { buffer = bufnr })
+    end
+    if mappings_table['gi'] then
         nomap("n", "gi", { buffer = bufnr })
-        map("n", "gI", "<cmd>Telescope lsp_incoming_calls<CR>", { desc = "[LSP] Incoming calls", buffer = bufnr })
-        map("n", "<leader>cI", "<cmd>Telescope lsp_incoming_calls<CR>", { desc = "[LSP] Incoming calls", buffer = bufnr })
-
-        map("n", "gO", "<cmd>Telescope lsp_outgoing_calls<CR>", { desc = "[LSP] Outgoing calls", buffer = bufnr })
-        map("n", "<leader>cO", "<cmd>Telescope lsp_outgoing_calls<CR>", { desc = "[LSP] Outgoing calls", buffer = bufnr })
-
-        map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", { desc = "[LSP] Definitions", buffer = bufnr })
-        map("n", "<leader>cd", "<cmd>Telescope lsp_definitions<CR>", { desc = "[LSP] Definitions", buffer = bufnr })
-
-        map("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "[LSP] References", buffer = bufnr })
-        map("n", "<leader>cr", "<cmd>Telescope lsp_references<CR>", { desc = "[LSP] References", buffer = bufnr })
-
-        map("n", "gi", "<cmd>Telescope lsp_implementations<CR>", { desc = "[LSP] Implementation", buffer = bufnr })
-        map("n", "<leader>ci", "<cmd>Telescope lsp_implementations<CR>", { desc = "[LSP] Implementation", buffer = bufnr })
-
-        map("n", "gh", "<cmd>Telescope lsp_implementations<CR>", { desc = "[LSP] Implementation", buffer = bufnr })
-        map("n", "<leader>ch", "<cmd>Telescope lsp_implementations<CR>", { desc = "[LSP] Implementation", buffer = bufnr })
-
-        map("n", "gh", vim.lsp.buf.signature_help, { desc = "[LSP] Type Def", buffer = bufnr })
-        map("n", "<leader>ch", vim.lsp.buf.signature_help, { desc = "[LSP] Type Def", buffer = bufnr })
-
-        map("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "[LSP] Type Def", buffer = bufnr })
-        map("n", "<leader>ct", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "[LSP] Type Def", buffer = bufnr })
-
-
-        map("n", "<leader>cf", vim.lsp.buf.format, { desc = "[LSP] Format buffer", buffer = bufnr })
-        map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "[LSP] Code actions", buffer = bufnr })
-        map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "[LSP] Rename", buffer = bufnr })
-        map("n", "<leader>cg", function() require("neogen").generate({}) end, { desc = "Generate docs", buffer = bufnr })
-        map("n", "<C-n>", vim.diagnostic.goto_next, { desc = "Next diagnostic", buffer = bufnr })
-        map("n", "<C-p>", vim.diagnostic.goto_prev, { desc = "Next diagnostic", buffer = bufnr })
-        map("n", "<S-k>", vim.lsp.buf.hover, { desc = "Show hover doc", buffer = bufnr })
-    end)
+    end
 end
 
 -- if you just want default config for the servers then put them in a table
@@ -88,3 +64,22 @@ for _, lsp in ipairs(servers) do
 
     lspconfig[lsp].setup(config)
 end
+
+-- Setup swift lsp
+ local swift_lsp = vim.api.nvim_create_augroup("swift_lsp", { clear = true })
+ vim.api.nvim_create_autocmd("FileType", {
+ 	pattern = { "swift" },
+ 	callback = function()
+ 		local root_dir = vim.fs.dirname(vim.fs.find({
+ 			"Package.swift",
+ 			".git",
+ 		}, { upward = true })[1])
+ 		local client = vim.lsp.start({
+ 			name = "sourcekit-lsp",
+ 			cmd = { "sourcekit-lsp" },
+ 			root_dir = root_dir,
+ 		})
+ 		vim.lsp.buf_attach_client(0, client)
+ 	end,
+ 	group = swift_lsp,
+ })

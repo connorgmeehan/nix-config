@@ -17,8 +17,38 @@ map("n", "<leader>E", "<cmd>:Neotree filesystem reveal left<CR>", { desc = "Focu
 map("n", "<leader>fp", "<cmd>:Telescope resume<CR>", { desc = "Previous Telescope" })
 
 -- LSP
--- Keybinds now set in [lspconfig config](./configs/lspconfig.lua) due to 
--- https://github.com/NvChad/NvChad/issues/2854
+map("n", "gI", "<cmd>Telescope lsp_incoming_calls<CR>", { desc = "[LSP] Incoming calls" })
+map("n", "<leader>cI", "<cmd>Telescope lsp_incoming_calls<CR>", { desc = "[LSP] Incoming calls" })
+
+map("n", "gO", "<cmd>Telescope lsp_outgoing_calls<CR>", { desc = "[LSP] Outgoing calls" })
+map("n", "<leader>cO", "<cmd>Telescope lsp_outgoing_calls<CR>", { desc = "[LSP] Outgoing calls" })
+
+map("n", "gd", "<cmd>Telescope lsp_definitions<CR>", { desc = "[LSP] Definitions" })
+map("n", "<leader>cd", "<cmd>Telescope lsp_definitions<CR>", { desc = "[LSP] Definitions" })
+
+map("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "[LSP] References" })
+map("n", "<leader>cr", "<cmd>Telescope lsp_references<CR>", { desc = "[LSP] References" })
+
+map("n", "gi", "<cmd>Telescope lsp_implementations<CR>", { desc = "[LSP] Implementation" })
+map("n", "<leader>ci", "<cmd>Telescope lsp_implementations<CR>", { desc = "[LSP] Implementation" })
+
+map("n", "gh", "<cmd>Telescope lsp_implementations<CR>", { desc = "[LSP] Implementation" })
+map("n", "<leader>ch", "<cmd>Telescope lsp_implementations<CR>", { desc = "[LSP] Implementation" })
+
+map("n", "gh", vim.lsp.buf.signature_help, { desc = "[LSP] Type Def" })
+map("n", "<leader>ch", vim.lsp.buf.signature_help, { desc = "[LSP] Type Def" })
+
+map("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "[LSP] Type Def" })
+map("n", "<leader>ct", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "[LSP] Type Def" })
+
+
+map("n", "<leader>cf", vim.lsp.buf.format, { desc = "[LSP] Format buffer" })
+map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "[LSP] Code actions" })
+map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "[LSP] Rename" })
+map("n", "<leader>cg", function() require("neogen").generate({}) end, { desc = "Generate docs" })
+map("n", "<C-n>", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+map("n", "<C-p>", vim.diagnostic.goto_prev, { desc = "Next diagnostic" })
+map("n", "<S-k>", vim.lsp.buf.hover, { desc = "Show hover doc" })
 
 -- Git signs
 map("n", "<leader>gR", "<cmd>lua require'gitsigns'.reset_hunk()<CR>", { desc = "Reset Hunk" })
