@@ -5,6 +5,9 @@
     pkgs.nodejs_20 # For installing extra language servers with mason
     pkgs.nodePackages.typescript # Global typescript installation for tsserver
 
+    pkgs.luajit
+    pkgs.luarocks
+
     pkgs.ripgrep
     pkgs.fzf
     pkgs.unzip
