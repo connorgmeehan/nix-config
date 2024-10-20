@@ -420,6 +420,16 @@ local plugins = {
     },
 
     {
+        'norcalli/nvim-colorizer.lua',
+        config = function ()
+            vim.schedule(function ()
+                require('colorizer').setup()
+            end)
+        end,
+        event = "VeryLazy",
+    },
+
+    {
         "alexghergh/nvim-tmux-navigation",
         opts = true,
         keys = {

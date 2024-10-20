@@ -12,7 +12,7 @@ stdenv.mkDerivation {
     owner = "NvChad";
     repo = "NvChad";
     rev = "8d2bb359e47d816e67ff86b5ce2d8f5abfe2b631";
-    sha256 = "sha256-lX+QkLuTTSu4+kzBIr+Oo+9GLuozL4mnIydfA87+bsE=";
+    sha256 = "sha256-1ioUc6WW7eZcgNt4F6mLpIZsj22Gzu7AcqkJoPQ+OVA=";
   };
 
   installPhase = ''
