@@ -15,8 +15,8 @@ in
       "opt+," = "debug_config";
     };
     font = {
-      package = (pkgs.nerdfonts.override { fonts = [ "Hack" ]; });
-      name = "Hack Nerd Font";
+      package = (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; });
+      name = "JetBrainsMono";
     };
     environment = {
       KITTY_ENABLE_WAYLAND = "1";
