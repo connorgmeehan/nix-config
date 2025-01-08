@@ -8,6 +8,8 @@
     pkgs.luajit
     pkgs.luarocks
 
+    pkgs.eslint_d
+    pkgs.nodePackages.prettier
     pkgs.ripgrep
     pkgs.fzf
     pkgs.unzip

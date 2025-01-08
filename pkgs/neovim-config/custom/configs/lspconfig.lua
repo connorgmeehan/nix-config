@@ -25,7 +25,7 @@ end
 
 -- if you just want default config for the servers then put them in a table
 local servers = { "html", "cssls", "clangd", "tailwindcss", "volar", "lua_ls", "svelte", "yamlls", "astro", "nil_ls",
-    "jsonls", "wgsl_analyzer", "bashls", "gdscript", "eslint", "tsserver", "zls", "cmake" }
+    "jsonls", "wgsl_analyzer", "bashls", "gdscript", "eslint", "tsserver", "zls", "cmake", "gopls" }
 
 local config_extras = {
     volar = function(config)
@@ -48,6 +48,24 @@ local config_extras = {
             },
         })
     end,
+    omnisharp = function (config)
+        return vim.tbl_deep_extend("force", config, {
+            cmd = { "omnisharp" }
+        })
+    end,
+    gopls = function (config)
+        return vim.tbl_deep_extend("force", config, {
+            settings = {
+                gopls = {
+                    completeUnimported = true,
+                    usePlaceholders = true,
+                    analyses = {
+                        unusedparams = true,
+                    },
+                }
+            }
+        })
+    end
 }
 
 for _, lsp in ipairs(servers) do
