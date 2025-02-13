@@ -13,6 +13,9 @@ local plugins = {
             -- format & linting
             {
                 "nvimtools/none-ls.nvim",
+                dependencies = {
+                  "nvimtools/none-ls-extras.nvim",
+                },
                 config = function()
                     require("configs.null-ls")
                 end,
@@ -89,6 +92,15 @@ local plugins = {
         ft = "json",
         dependencies = {"MunifTanjim/nui.nvim"},
         opts = true,
+    },
+
+    {
+        "pmizio/typescript-tools.nvim",
+        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+        ft = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+        config = function()
+            require("typescript-tools").setup({})
+        end,
     },
 
     {
@@ -439,7 +451,10 @@ local plugins = {
 
     {
         "alexghergh/nvim-tmux-navigation",
-        opts = true,
+        event = 'VeryLazy',
+        config = function ()
+            require('nvim-tmux-navigation').setup()
+        end,
         keys = {
             { "<C-h>",     "<cmd>NvimTmuxNavigateLeft<cr>",       silent = true },
             { "<C-j>",     "<cmd>NvimTmuxNavigateDown<cr>",       silent = true },
