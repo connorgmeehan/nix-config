@@ -7,6 +7,8 @@ in
   programs.lazygit = {
     enable = true;
     settings = {
+      os.editPreset = "nvim";
+
       gui.theme = {
         activeBorderColor = [ scheme.base04 "bold" ];
         inactiveBorderColor = [ scheme.base08 ];
