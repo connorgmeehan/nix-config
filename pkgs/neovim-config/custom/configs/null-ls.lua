@@ -11,6 +11,8 @@ local sources = {
   -- b.formatting.deno_fmt, -- choosed deno for ts/js files cuz its very fast!
   -- b.formatting.rustywind, -- Disabled for work
   b.formatting.prettierd,
+  b.diagnostics.eslint,
+  b.code_actions.eslint,
 
   -- Lua
   b.formatting.stylua,
