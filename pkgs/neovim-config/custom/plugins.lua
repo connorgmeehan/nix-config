@@ -85,6 +85,13 @@ local plugins = {
     },
 
     {
+        "vuki656/package-info.nvim",
+        ft = "json",
+        dependencies = {"MunifTanjim/nui.nvim"},
+        opts = true,
+    },
+
+    {
         "nvim-treesitter/nvim-treesitter",
         opts = overrides.treesitter,
     },
