@@ -3,6 +3,21 @@ local overrides = require("configs.overrides")
 ---@type NvPluginSpec[]
 local plugins = {
     {
+        "nvchad/ui",
+        config = function()
+            require "nvchad"
+        end
+    },
+
+    {
+        "nvchad/base46",
+        lazy = true,
+        build = function()
+            require("base46").load_all_highlights()
+        end,
+    },
+
+    {
         "stevearc/conform.nvim",
         disable = true,
     },
@@ -14,7 +29,7 @@ local plugins = {
             {
                 "nvimtools/none-ls.nvim",
                 dependencies = {
-                  "nvimtools/none-ls-extras.nvim",
+                    "nvimtools/none-ls-extras.nvim",
                 },
                 config = function()
                     require("configs.null-ls")
@@ -79,7 +94,7 @@ local plugins = {
         opts = function()
             local cfg = require "nvchad.configs.cmp";
             table.insert(cfg.sources, { name = "nvim_lsp_signature_help" })
-            table.insert(cfg.sources, { name = "copilot"})
+            table.insert(cfg.sources, { name = "copilot" })
             return cfg
         end,
         config = function(_, opts)
@@ -90,7 +105,7 @@ local plugins = {
     {
         "vuki656/package-info.nvim",
         ft = "json",
-        dependencies = {"MunifTanjim/nui.nvim"},
+        dependencies = { "MunifTanjim/nui.nvim" },
         opts = true,
     },
 
@@ -452,8 +467,8 @@ local plugins = {
     {
         "alexghergh/nvim-tmux-navigation",
         event = 'VeryLazy',
-        config = function ()
-            require('nvim-tmux-navigation').setup()
+        config = function()
+            require('nvim-tmux-navigation').setup({})
         end,
         keys = {
             { "<C-h>",     "<cmd>NvimTmuxNavigateLeft<cr>",       silent = true },

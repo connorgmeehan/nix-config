@@ -11,7 +11,7 @@ stdenv.mkDerivation {
   src = pkgs.fetchFromGitHub {
     owner = "NvChad";
     repo = "NvChad";
-    rev = "8d2bb359e47d816e67ff86b5ce2d8f5abfe2b631";
+    rev = "6f25b2739684389ca69ea8229386c098c566c408";
     sha256 = "sha256-1ioUc6WW7eZcgNt4F6mLpIZsj22Gzu7AcqkJoPQ+OVA=";
   };
 
@@ -19,7 +19,6 @@ stdenv.mkDerivation {
     mkdir $out
     cp ${initLuaSrc} "$out/init.lua"
     cp -r * "$out/"
-    mkdir -p "$out/lua/custom"
     cp -r ${custom}/* "$out/lua"
   '';
 

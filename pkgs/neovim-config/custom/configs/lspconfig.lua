@@ -25,7 +25,7 @@ end
 
 -- if you just want default config for the servers then put them in a table
 local servers = { "html", "cssls", "clangd", "tailwindcss", "volar", "lua_ls", "svelte", "yamlls", "astro", "nil_ls",
-    "jsonls", "wgsl_analyzer", "bashls", "gdscript", "eslint", "zls", "cmake", "gopls", "omnisharp" }
+    "jsonls", "wgsl_analyzer", "bashls", "gdscript", "eslint", "zls", "cmake", "gopls", "omnisharp", "gleam" }
 
 local config_extras = {
     volar = function(config)
@@ -69,7 +69,6 @@ local config_extras = {
 }
 
 for _, lsp in ipairs(servers) do
-    print("Configuring LSP " .. lsp)
     local config = {
         on_init = on_init,
         on_attach = on_attach_with_keybinds,
