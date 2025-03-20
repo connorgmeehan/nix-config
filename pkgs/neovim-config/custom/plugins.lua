@@ -114,7 +114,12 @@ local plugins = {
         dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
         ft = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
         config = function()
-            require("typescript-tools").setup({})
+            require("typescript-tools").setup({
+                on_attach = function(client)
+                    client.server_capabilities.documentFormattingProvider = false
+                    client.server_capabilities.documentRangeFormattingProvider = false
+                end,
+            })
         end,
     },
 

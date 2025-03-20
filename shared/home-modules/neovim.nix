@@ -19,7 +19,7 @@
     pkgs.lua-language-server
     pkgs.pkg-config
     pkgs.cairo
-    pkgs.lldb_14
+    pkgs.lldb_19
   ];
   programs.neovim = {
     enable = true;
