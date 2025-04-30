@@ -545,6 +545,23 @@ local plugins = {
         config = function()
             require("copilot_cmp").setup()
         end
+    },
+
+    {
+        "gabrielpoca/replacer.nvim",
+        opts = { rename_files = false },
+        keys = {
+            {
+                '<leader>cq',
+                function() require('replacer').run({ save_on_write = false, rename_files = false }) end,
+                desc = "Start editing quickfix"
+            },
+            {
+                '<leader>cQ',
+                function() require('replacer').save({ save_on_write = false, rename_files = false }) end,
+                desc = "Save quickfix edits"
+            }
+        }
     }
 }
 
