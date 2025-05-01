@@ -48,6 +48,9 @@
       pull = {
           ff = true;
       };
+      rerere = {
+          enabled = true;
+      };
     };
 
     aliases = {
