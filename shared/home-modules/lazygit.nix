@@ -20,6 +20,7 @@ in
         cherryPickedCommitFgColor = [ scheme.base00 ];
         unstagedChangesColor = [ scheme.base01 ];
       };
+      git.paging.externalDiffCommand = "${pkgs.difftastic}/bin/difft --color=always";
     };
   };
 }
