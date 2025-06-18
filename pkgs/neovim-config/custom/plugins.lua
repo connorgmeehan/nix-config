@@ -103,13 +103,6 @@ local plugins = {
     },
 
     {
-        "vuki656/package-info.nvim",
-        ft = "json",
-        dependencies = { "MunifTanjim/nui.nvim" },
-        opts = true,
-    },
-
-    {
         "pmizio/typescript-tools.nvim",
         dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
         ft = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
@@ -348,6 +341,41 @@ local plugins = {
         },
     },
 
+    {
+        'pwntester/octo.nvim',
+        dependencies = {
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope.nvim',
+            -- OR 'ibhagwan/fzf-lua',
+            -- OR 'folke/snacks.nvim',
+            'nvim-tree/nvim-web-devicons',
+        },
+        config = function()
+            require "octo".setup({
+                mappings_disable_default = false
+            })
+        end,
+        cmd = "Octo",
+        keys = {
+            { "<leader>opl", "<cmd>Octo pr list<cr>", desc = "List PRs" },
+            { "<leader>opC", "<cmd>Octo pr create<cr>", desc = "Create PR" },
+            { "<leader>opc", "<cmd>Octo pr checkout<cr>", desc = "Checkout PR from list" },
+            { "<leader>opu", "<cmd>Octo pr url<cr>", desc = "Copy url" },
+
+            { "<leader>ors", "<cmd>Octo review start<cr>", desc = "Start review" },
+            { "<leader>orS", "<cmd>Octo review submit<cr>", desc = "Submit review" },
+            { "<leader>orx", "<cmd>Octo review close<cr>", desc = "Close review" },
+            { "<leader>ord", "<cmd>Octo review discard<cr>", desc = "Discard review" },
+            { "<leader>orr", "<cmd>Octo review resume<cr>", desc = "Resume review" },
+            { "<leader>orc", "<cmd>Octo review commit<cr>", desc = "Review a single commit" },
+            { "<leader>orp", "<cmd>Octo review comments<cr>", desc = "Preview pending comments" },
+
+            { "<leader>oca", "<cmd>Octo comment add<cr>", desc = "Add comment" },
+            { "<leader>ocs", "<cmd>Octo comment suggest<cr>", desc = "Add suggestion" },
+            { "<leader>ocd", "<cmd>Octo comment delete<cr>", desc = "Delete comment" },
+            { "<leader>ocu", "<cmd>Octo comment url<cr>", desc = "Copy url" },
+        }
+    },
     -- Neogit for hydra git mode.
     {
         "NeogitOrg/neogit",
@@ -569,20 +597,19 @@ local plugins = {
         opts = {}, -- for default options, refer to the configuration section for custom setup.
         cmd = "Trouble",
         dependencies = {
-            {
-                "artemave/workspace-diagnostics.nvim",
-                keys = {
-                    "<leader>tw",
-                    function()
-                        for _, client in ipairs(vim.lsp.buf_get_clients()) do
-                            require("workspace-diagnostics").populate_workspace_diagnostics(client, 0)
-                        end
-                    end,
-                    "Populates workspace diagnostics"
-                }
-            }
+            "artemave/workspace-diagnostics.nvim",
         },
         keys = {
+            {
+                "<leader>tw",
+                function()
+                    for _, client in ipairs(vim.lsp.buf_get_clients()) do
+                        require("workspace-diagnostics").populate_workspace_diagnostics(client, 0)
+                    end
+                    vim.notify("Workspace diagnostics populated")
+                end,
+                desc = "Populates workspace diagnostics"
+            },
             {
                 "<leader>tt",
                 "<cmd>Trouble diagnostics toggle<cr>",

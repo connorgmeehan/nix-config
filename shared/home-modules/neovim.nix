@@ -20,6 +20,7 @@
     pkgs.pkg-config
     pkgs.cairo
     pkgs.lldb_19
+    pkgs.gh
   ];
   programs.neovim = {
     enable = true;
