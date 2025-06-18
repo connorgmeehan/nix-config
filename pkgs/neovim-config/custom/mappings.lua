@@ -14,7 +14,9 @@ map("n", "<leader>,", "<cmd>Telescope buffers<cr>", { desc = "Quit buffer" })
 map("n", "<leader>e", "<cmd>:Neotree filesystem reveal left toggle<CR>", { desc = "File tree" })
 map("n", "<leader>E", "<cmd>:Neotree filesystem reveal left<CR>", { desc = "Focus tree" })
 
+-- Telescope
 map("n", "<leader>fp", "<cmd>:Telescope resume<CR>", { desc = "Previous Telescope" })
+map("n", "<leader>fg", "<cmd>:Telescope git_bcommits<CR>", { desc = "Git file history " })
 
 -- LSP
 map("n", "gI", "<cmd>Telescope lsp_incoming_calls<CR>", { desc = "[LSP] Incoming calls" })
