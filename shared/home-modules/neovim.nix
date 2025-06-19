@@ -31,7 +31,6 @@
   # Config and plugins
   xdg.configFile."nvim" = {
     source = "${pkgs.neovim-config}";
-    recursive = false;
   };
 
   programs.bash.initExtra = lib.mkAfter ''

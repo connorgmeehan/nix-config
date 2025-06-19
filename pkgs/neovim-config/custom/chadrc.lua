@@ -20,8 +20,13 @@ M.base64 = {
 
 M.ui = {
     tabufline = {
-        order = { "treeOffset", "buffers", "tabs", "btns", "abc" },
+        enabled = true,
+        lazyload = true,
+        order = { "treeOffset", "buffers", "tabs", "btns" },
+        modules = nil,
+        bufwidth = 21,
     },
+
     statusline = {
         theme = "vscode_colored", -- default/vscode/vscode_colored/minimal
         -- default/round/block/arrow separators work only for default statusline theme
