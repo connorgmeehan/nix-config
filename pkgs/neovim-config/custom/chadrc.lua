@@ -4,7 +4,7 @@ local M = {}
 M.lsp = { signature = true }
 
 -- Path to overriding theme and highlights files
-M.base64 = {
+M.base46 = {
     theme = "kanagawa",
     transparency = true,
     theme_toggle = { "kanagawa", "one_light" },
