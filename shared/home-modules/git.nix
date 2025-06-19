@@ -6,21 +6,12 @@
   home.packages = lib.attrValues {
     inherit
       (pkgs)
-      #bfg-repo-cleaner
       colordiff
-      #gist
-      #git-filter-repo
       pre-commit
       ;
-
-    inherit
-      (pkgs.gitAndTools)
-      #git-absorb
-      #gitui
-      #git-machete
-      #gh
-      ;
   };
+
+  programs.gpg.enable = true;
 
   programs.git = {
     enable = true;
@@ -32,6 +23,27 @@
       enable = true;
       # options.map-styles = "bold purple => syntax #8839ef, bold cyan => syntax #1e66f5";
     };
+
+    includes = [
+        {
+            contents = {
+                user = {
+                    name = "Connor Guy Meehan";
+                    email = "connorgm@pm.me";
+                    signingKey = "1A602965FC593E9E";
+                };
+            };
+        }
+        {
+            contents = {
+                user = {
+                    name = "Connor Guy Meehan";
+                    email = "connor.meehan@drawboard.com";
+                };
+            };
+            condition = "gitdir:~/projects/drawboard/";
+        }
+    ];
 
     extraConfig = {
       init = {defaultBranch = "main";};
@@ -51,6 +63,8 @@
       rerere = {
           enabled = true;
       };
+      # Sign all commits using ssh key
+      commit.gpgsign = true;
     };
 
     aliases = {
@@ -58,7 +72,6 @@
       fuck = "commit --amend -m";
       ca = "commit -am";
       d = "diff";
-      ps = "!git push origin $(git rev-parse --abbrev-ref HEAD)";
       pl = "!git pull origin $(git rev-parse --abbrev-ref HEAD)";
       af = "!git add $(git ls-files -m -o --exclude-standard | fzf -m)";
       st = "status";
