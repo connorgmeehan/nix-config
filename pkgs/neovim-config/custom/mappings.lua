@@ -54,8 +54,11 @@ map("n", "<S-k>", vim.lsp.buf.hover, { desc = "Show hover doc" })
 
 -- Git signs
 map("n", "<leader>gR", "<cmd>lua require'gitsigns'.reset_hunk()<CR>", { desc = "Reset Hunk" })
+map("n", "<leader>gh", "<cmd>:Gitsigns preview_hunk<CR>", { desc = "Preview hunk" })
 map("n", "<leader>gn", "<cmd>lua require'gitsigns'.next_hunk()<CR>", { desc = "Next Hunk" })
 map("n", "<leader>gp", "<cmd>lua require'gitsigns'.prev_hunk()<CR>", { desc = "Prev Hunk" })
+map("n", "<leader>gB", "<cmd>Gitsigns blame<CR>", { desc = "Blame" })
+map("n", "<leader>gb", "<cmd>Gitsigns blame_line<CR>", { desc = "Blame line" })
 -- Tree
 -- ["<leader>E"] = { "<cmd> NvimTreeFocus <CR>", "focus nvimtree" },
 -- ["<leader>e"] = { "<cmd> NvimTreeToggle <CR>", "toggle nvimtree" },
