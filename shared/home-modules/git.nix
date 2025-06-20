@@ -39,6 +39,7 @@
                 user = {
                     name = "Connor Guy Meehan";
                     email = "connor.meehan@drawboard.com";
+                    signingKey = "44432581834F3485";
                 };
             };
             condition = "gitdir:~/projects/drawboard/";
