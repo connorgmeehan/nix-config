@@ -9,6 +9,9 @@ in
     settings = {
       os.editPreset = "nvim";
 
+      services = {
+        gh-work = "github:github.com";
+      };
       gui.theme = {
         activeBorderColor = [ scheme.base04 "bold" ];
         inactiveBorderColor = [ scheme.base08 ];
