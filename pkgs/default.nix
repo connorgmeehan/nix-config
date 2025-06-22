@@ -4,7 +4,6 @@
 { pkgs ? (import ../nixpkgs.nix) { } }: {
   neovim-config = pkgs.callPackage ./neovim-config { };
   ny = pkgs.callPackage ./ny.nix { };
-  rustywind = pkgs.callPackage ./rustywind.nix { };
   escape-fsh = pkgs.callPackage ./escape-fhs.nix { };
   zinit = pkgs.callPackage ./zinit.nix { };
   # basis-universal = pkgs.callPackage ./basis-universal.nix { };
