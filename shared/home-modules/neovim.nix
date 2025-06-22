@@ -15,7 +15,6 @@
     pkgs.unzip
     pkgs.ccls
     pkgs.deno
-    pkgs.rustywind
     pkgs.lua-language-server
     pkgs.pkg-config
     pkgs.cairo
