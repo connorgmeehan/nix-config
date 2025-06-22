@@ -19,27 +19,27 @@ local plugins = {
 
     {
         "stevearc/conform.nvim",
-        disable = true,
+        config = function ()
+            local config = require("configs.conform")
+            require("conform").setup(config)
+        end,
+        keys = {
+            { "<leader>fm", function ()
+                require("conform").format({ async = true })
+            end, desc = "Format buffer"}
+        },
+        cmd = "ConformInfo"
     },
+
     -- Override plugin definition options
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            -- format & linting
-            {
-                "nvimtools/none-ls.nvim",
-                dependencies = {
-                    "nvimtools/none-ls-extras.nvim",
-                },
-                config = function()
-                    require("configs.null-ls")
-                end,
-            },
             "folke/neodev.nvim",
             "folke/neoconf.nvim",
         },
         config = function()
-            require("configs.lspconfig")
+            return require("configs.lspconfig")
         end, -- Override to setup mason-lspconfig
     },
 
@@ -358,23 +358,23 @@ local plugins = {
         end,
         cmd = "Octo",
         keys = {
-            { "<leader>opl", "<cmd>Octo pr list<cr>", desc = "List PRs" },
-            { "<leader>opC", "<cmd>Octo pr create<cr>", desc = "Create PR" },
-            { "<leader>opc", "<cmd>Octo pr checkout<cr>", desc = "Checkout PR from list" },
-            { "<leader>opu", "<cmd>Octo pr url<cr>", desc = "Copy url" },
+            { "<leader>opl", "<cmd>Octo pr list<cr>",         desc = "List PRs" },
+            { "<leader>opC", "<cmd>Octo pr create<cr>",       desc = "Create PR" },
+            { "<leader>opc", "<cmd>Octo pr checkout<cr>",     desc = "Checkout PR from list" },
+            { "<leader>opu", "<cmd>Octo pr url<cr>",          desc = "Copy url" },
 
-            { "<leader>ors", "<cmd>Octo review start<cr>", desc = "Start review" },
-            { "<leader>orS", "<cmd>Octo review submit<cr>", desc = "Submit review" },
-            { "<leader>orx", "<cmd>Octo review close<cr>", desc = "Close review" },
-            { "<leader>ord", "<cmd>Octo review discard<cr>", desc = "Discard review" },
-            { "<leader>orr", "<cmd>Octo review resume<cr>", desc = "Resume review" },
-            { "<leader>orc", "<cmd>Octo review commit<cr>", desc = "Review a single commit" },
+            { "<leader>ors", "<cmd>Octo review start<cr>",    desc = "Start review" },
+            { "<leader>orS", "<cmd>Octo review submit<cr>",   desc = "Submit review" },
+            { "<leader>orx", "<cmd>Octo review close<cr>",    desc = "Close review" },
+            { "<leader>ord", "<cmd>Octo review discard<cr>",  desc = "Discard review" },
+            { "<leader>orr", "<cmd>Octo review resume<cr>",   desc = "Resume review" },
+            { "<leader>orc", "<cmd>Octo review commit<cr>",   desc = "Review a single commit" },
             { "<leader>orp", "<cmd>Octo review comments<cr>", desc = "Preview pending comments" },
 
-            { "<leader>oca", "<cmd>Octo comment add<cr>", desc = "Add comment" },
+            { "<leader>oca", "<cmd>Octo comment add<cr>",     desc = "Add comment" },
             { "<leader>ocs", "<cmd>Octo comment suggest<cr>", desc = "Add suggestion" },
-            { "<leader>ocd", "<cmd>Octo comment delete<cr>", desc = "Delete comment" },
-            { "<leader>ocu", "<cmd>Octo comment url<cr>", desc = "Copy url" },
+            { "<leader>ocd", "<cmd>Octo comment delete<cr>",  desc = "Delete comment" },
+            { "<leader>ocu", "<cmd>Octo comment url<cr>",     desc = "Copy url" },
         }
     },
 

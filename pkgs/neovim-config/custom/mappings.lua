@@ -44,7 +44,21 @@ map("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "[LSP] Type D
 map("n", "<leader>ct", "<cmd>Telescope lsp_type_definitions<CR>", { desc = "[LSP] Type Def" })
 
 
-map("n", "<leader>cf", vim.lsp.buf.format, { desc = "[LSP] Format buffer" })
+map("n", "<leader>cf", function ()
+    vim.lsp.buf.format({
+        filter = function (client)
+            local lsp_config = require("configs.lspconfig")
+            local settings = lsp_config[client.name]
+            print("LSP client name: " .. client.name)
+            if settings.format ~= nil then
+                print("\t".. settings.format and "true" or "false")
+                return settings.format
+            end
+            print("\t falling back to default: true")
+            return true
+        end
+    })
+end, { desc = "[LSP] Format buffer" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "[LSP] Code actions" })
 map("n", "<leader>cr", vim.lsp.buf.rename, { desc = "[LSP] Rename" })
 map("n", "<leader>cg", function() require("neogen").generate({}) end, { desc = "Generate docs" })
