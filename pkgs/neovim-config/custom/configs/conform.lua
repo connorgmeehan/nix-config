@@ -10,7 +10,6 @@ return {
         css = { "prettierd" },
         json = { "prettierd" },
         markdown = { "prettierd" },
-        astro = { "biome", lsp_format = "fallback" },
         cpp = { "clang_format" },
     },
 }

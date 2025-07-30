@@ -66,6 +66,10 @@
       };
       # Sign all commits using ssh key
       commit.gpgsign = true;
+
+      merge.tool = "nvim";
+      "mergetool \"nvim\"".cmd = "nvim -c \"DiffviewOpen\"";
+      mergetool.prompt = false;
     };
 
     aliases = {

@@ -19,14 +19,18 @@ local plugins = {
 
     {
         "stevearc/conform.nvim",
-        config = function ()
+        config = function()
             local config = require("configs.conform")
             require("conform").setup(config)
         end,
         keys = {
-            { "<leader>fm", function ()
-                require("conform").format({ async = true })
-            end, desc = "Format buffer"}
+            {
+                "<leader>fm",
+                function()
+                    require("conform").format({ async = true })
+                end,
+                desc = "Format buffer"
+            }
         },
         cmd = "ConformInfo"
     },
@@ -532,7 +536,19 @@ local plugins = {
                 desc = "Quickfix List (Trouble)",
             },
         },
-    }
+    },
+
+    {
+        "sindrets/diffview.nvim",
+        cmd = {
+            "DiffviewOpen",
+            "DiffviewClose",
+            "DiffviewToggleFiles",
+            "DiffviewFocusFiles",
+            "DiffviewRefresh",
+            "DiffviewFileHistory",
+        },
+    },
 }
 
 return plugins
