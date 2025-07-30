@@ -37,6 +37,9 @@ in
         tmux-which-key
       ];
       extraConfig = '' 
+        # Use ZSH
+        set -g default-command zsh
+
         # Fix neovim colours
         set-option -g default-terminal "screen-256color"
         set-option -sa terminal-overrides ',xterm-256color:RGB' 
@@ -71,6 +74,10 @@ in
         bind-key l select-pane -R
         bind-key - split-window -v
         bind-key \\ split-window -h
+
+        # Use `C-s C-n/p` to navigate windows
+        bind-key -r C-n next-window
+        bind-key -r C-p previous-window
 
         # forget the find window.  That is for chumps
         bind-key -r s run-shell "tmux neww tms"
