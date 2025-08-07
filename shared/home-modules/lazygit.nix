@@ -1,10 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
 let 
   scheme = config.scheme.withHashtag;
 in
 {
   programs.lazygit = {
+    package = pkgs.unstable.lazygit;
     enable = true;
     settings = {
       os.editPreset = "nvim";
