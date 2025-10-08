@@ -85,7 +85,6 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
     nodePackages.pnpm
 
     awscli2
-    lazygit
     rustup
     fzf
   ];

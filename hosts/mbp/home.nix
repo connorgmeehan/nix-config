@@ -79,7 +79,6 @@ args@{ inputs, outputs, lib, config, pkgs, ... }: {
   home.packages = with pkgs; [
     awscli2
     slack
-    lazygit
     nodePackages.pnpm
 
     fzf
