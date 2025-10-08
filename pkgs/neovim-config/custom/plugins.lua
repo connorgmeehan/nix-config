@@ -475,15 +475,10 @@ local plugins = {
         opts = { rename_files = false },
         keys = {
             {
-                '<leader>cq',
-                function() require('replacer').run({ save_on_write = false, rename_files = false }) end,
+                '<leader>ce',
+                function() require('replacer').run({ save_on_write = true, rename_files = true }) end,
                 desc = "Start editing quickfix"
             },
-            {
-                '<leader>cQ',
-                function() require('replacer').save({ save_on_write = false, rename_files = false }) end,
-                desc = "Save quickfix edits"
-            }
         }
     },
 
