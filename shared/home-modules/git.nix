@@ -60,6 +60,7 @@
       };
       pull = {
           ff = true;
+          rebase = true;
       };
       rerere = {
           enabled = true;
