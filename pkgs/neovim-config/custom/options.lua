@@ -21,6 +21,10 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufNew", "BufWinEnter"  }, {
   command = "set foldexpr=nvim_treesitter#foldexpr()",
 })
 
+-- Adds CopyPath command to copy the current file path to clipboard
+vim.api.nvim_create_user_command("CopyPath", "call setreg('+', expand('%'))", {})
+
+
 -- Fix Neogit highlight
 vim.api.nvim_set_hl(0, 'NeogitDiffDelete', { fg = "#bf565f", bg = "#261f1f" })
 vim.api.nvim_set_hl(0, 'NeogitDiffDeleteHighlight', { fg = "#d8616b", bg = "#342a2a" })
