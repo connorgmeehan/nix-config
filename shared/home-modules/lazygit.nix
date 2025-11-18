@@ -25,6 +25,13 @@ in
         unstagedChangesColor = [ scheme.base01 ];
       };
       git.paging.externalDiffCommand = "${pkgs.difftastic}/bin/difft --color=always";
+
+      keybinding = {
+        commits = {
+          moveDownCommit = "J";
+          moveUpCommit = "K";
+        };
+      };
     };
   };
 }
