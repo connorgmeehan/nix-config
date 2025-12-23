@@ -52,58 +52,70 @@ local plugins = {
         "williamboman/mason.nvim",
         opts = overrides.mason,
     },
-
-    -- load luasnips + cmp related in insert mode only
     {
         "hrsh7th/nvim-cmp",
+        enabled = false,
+    },
+
+    {
+        'saghen/blink.cmp',
+        -- optional: provides snippets for the snippet source
+        dependencies = { 'rafamadriz/friendly-snippets',  'fang2hou/blink-copilot' },
         event = "InsertEnter",
-        dependencies = {
-            {
-                -- snippet plugin
-                "L3MON4D3/LuaSnip",
-                dependencies = "rafamadriz/friendly-snippets",
-                opts = { history = true, updateevents = "TextChanged,TextChangedI" },
-                config = function(_, opts)
-                    require("luasnip").config.set_config(opts)
-                    require "nvchad.configs.luasnip"
-                end,
+
+        -- use a release tag to download pre-built binaries
+        version = '1.*',
+        -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+        -- build = 'cargo build --release',
+        -- If you use nix, you can build from source using latest nightly rust with:
+        -- build = 'nix run .#build-plugin',
+
+        ---@module 'blink.cmp'
+        ---@type blink.cmp.Config
+        opts = {
+            -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+            -- 'super-tab' for mappings similar to vscode (tab to accept)
+            -- 'enter' for enter to accept
+            -- 'none' for no mappings
+            --
+            -- All presets have the following mappings:
+            -- C-space: Open menu or open docs if already open
+            -- C-n/C-p or Up/Down: Select next/previous item
+            -- C-e: Hide menu
+            -- C-k: Toggle signature help (if signature.enabled = true)
+            --
+            -- See :h blink-cmp-config-keymap for defining your own keymap
+            keymap = { preset = 'enter' },
+
+            appearance = {
+                nerd_font_variant = 'mono'
             },
 
-            -- autopairing of (){}[] etc
-            {
-                "windwp/nvim-autopairs",
-                opts = {
-                    fast_wrap = {},
-                    disable_filetype = { "TelescopePrompt", "vim" },
+            -- (Default) Only show the documentation popup when manually triggered
+            completion = {
+                menu = { draw = { columns = { { "kind_icon", "label", "label_description", gap = 1 } } } },
+                documentation = { auto_show = false },
+                ghost_text = { enabled = true },
+            },
+
+            -- Default list of enabled providers defined so that you can extend it
+            -- elsewhere in your config, without redefining it, due to `opts_extend`
+            sources = {
+                default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+                providers = {
+                copilot = {
+                  name = "copilot",
+                  module = "blink-copilot",
+                  score_offset = 0,
+                  async = true,
+                  opts = {
+                    max_completions = 3,
+                  }
                 },
-                config = function(_, opts)
-                    require("nvim-autopairs").setup(opts)
-
-                    -- setup cmp for autopairs
-                    local cmp_autopairs = require "nvim-autopairs.completion.cmp"
-                    require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
-                end,
-            },
-
-            -- cmp sources plugins
-            {
-                "saadparwaiz1/cmp_luasnip",
-                "hrsh7th/cmp-nvim-lua",
-                "hrsh7th/cmp-nvim-lsp",
-                "hrsh7th/cmp-buffer",
-                "hrsh7th/cmp-path",
-                "hrsh7th/cmp-nvim-lsp-signature-help"
+              },
             },
         },
-        opts = function()
-            local cfg = require "nvchad.configs.cmp";
-            table.insert(cfg.sources, { name = "nvim_lsp_signature_help" })
-            table.insert(cfg.sources, { name = "copilot" })
-            return cfg
-        end,
-        config = function(_, opts)
-            require("cmp").setup(opts)
-        end,
+        opts_extend = { "sources.default" }
     },
 
     {
@@ -274,6 +286,12 @@ local plugins = {
         config = true,
         opts = {
             -- configurations go here
+            symbols = {
+                seperator = ""
+            },
+            theme = {
+                seperator = { fg = "#737aa2" },
+            }
         },
     },
 
@@ -409,65 +427,17 @@ local plugins = {
     },
 
     {
-        'zbirenbaum/copilot.lua',
-        cmd = 'Copilot',
-        event = 'InsertEnter',
-        opts = {
-            -- I don't find the panel useful.
-            panel = { enabled = false },
-            suggestion = {
-                auto_trigger = true,
-                -- Use alt to interact with Copilot.
-                keymap = {
-                    -- Disable the built-in mapping, we'll configure it in nvim-cmp.
-                    accept = false,
-                    accept_word = '<M-w>',
-                    accept_line = '<M-l>',
-                    next = '<M-]>',
-                    prev = '<M-[>',
-                    dismiss = '/',
-                },
-            },
-            filetypes = { markdown = true },
+      "zbirenbaum/copilot.lua",
+      cmd = "Copilot",
+      event = "InsertEnter",
+      opts = {
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+        filetypes = {
+          markdown = true,
+          help = true,
         },
-        config = function(_, opts)
-            local cmp = require 'cmp'
-            local copilot = require 'copilot.suggestion'
-            local luasnip = require 'luasnip'
-
-            require('copilot').setup(opts)
-
-            local function set_trigger(trigger)
-                vim.b.copilot_suggestion_auto_trigger = trigger
-                vim.b.copilot_suggestion_hidden = not trigger
-            end
-
-            -- Hide suggestions when the completion menu is open.
-            -- cmp.event:on('menu_opened', function()
-            --     if copilot.is_visible() then
-            --         copilot.dismiss()
-            --     end
-            --     set_trigger(false)
-            -- end)
-
-            -- Disable suggestions when inside a snippet.
-            cmp.event:on('menu_closed', function()
-                set_trigger(not luasnip.expand_or_locally_jumpable())
-            end)
-            vim.api.nvim_create_autocmd('User', {
-                pattern = { 'LuasnipInsertNodeEnter', 'LuasnipInsertNodeLeave' },
-                callback = function()
-                    set_trigger(not luasnip.expand_or_locally_jumpable())
-                end,
-            })
-        end,
-    },
-
-    {
-        "zbirenbaum/copilot-cmp",
-        config = function()
-            require("copilot_cmp").setup()
-        end
+      },
     },
 
     {

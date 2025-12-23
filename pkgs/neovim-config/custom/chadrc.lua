@@ -35,10 +35,6 @@ M.ui = {
         order = nil,
         modules = nil,
     },
-    cmp = {
-        lspkind_text = false,
-        style = "flat_dark",
-    }
 }
 
 -- check core.mappings for table structure
