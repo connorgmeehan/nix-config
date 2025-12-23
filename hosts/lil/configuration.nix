@@ -8,9 +8,11 @@
   imports =
     [ # Include the results of the hardware scan.
       ./modules/nfs.nix
+      ./modules/jellyfin.nix
 
       ./hardware-configuration.nix
     ];
+  nixpkgs.config.allowUnfree = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -47,6 +49,9 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
+  # Autologin as connorgm
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "connorgm";
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
