@@ -7,6 +7,8 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      ./modules/nfs.nix
+
       ./hardware-configuration.nix
     ];
 
