@@ -143,10 +143,18 @@
   systemd.targets.hybrid-sleep.enable = false;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [
+    # SSH
+    22
+    # NFS
+    111 2049 4000 4001 4002 20048 
+  ];
+  networking.firewall.allowedUDPPorts = [ 
+    # NFS
+    111 2049 4000 4001 4002 20048 
+  ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
