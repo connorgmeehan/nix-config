@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./modules/nfs.nix
+      ./modules/samba.nix
       ./modules/jellyfin.nix
 
       ./hardware-configuration.nix
