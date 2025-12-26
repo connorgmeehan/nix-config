@@ -18,24 +18,24 @@
         "map to guest" = "bad user";
       };
       "public" = {
-        "path" = "/run/media/connorgm/Elements SE/shared";
+        "path" = "/run/media/externalhdd/shared";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "yes";
-        "create mask" = "0644";
-        "directory mask" = "0755";
+        "create mask" = "0664";
+        "directory mask" = "0775";
         "force user" = "connorgm";
-        #"force group" = "groupname";
+        "force group" = "externalhdd";
       };
       "private" = {
-        "path" = "/export/private";
+        "path" = "/run/media/externalhdd/private";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "force user" = "username";
-        #"force group" = "groupname";
+        "create mask" = "0664";
+        "directory mask" = "0775";
+        "force user" = "connorgm";
+        "force group" = "externalhdd";
       };
     };
   };

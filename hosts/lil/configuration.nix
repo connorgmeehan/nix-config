@@ -10,6 +10,10 @@
       ./modules/nfs.nix
       ./modules/samba.nix
       ./modules/jellyfin.nix
+      ./modules/externalhdd.nix
+      ./modules/mullvadvpn.nix
+      ./modules/deluge.nix
+      ./modules/qbittorent.nix
 
       ./hardware-configuration.nix
     ];
@@ -89,7 +93,7 @@
   users.users.connorgm = {
     isNormalUser = true;
     description = "Connor Guy Meehan";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "externalhdd" ];
     packages = with pkgs; [
     #  thunderbird
     ];
