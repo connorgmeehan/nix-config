@@ -2,7 +2,7 @@
 
 let
   # Replace with the actual device name or UUID of your external HDD.
-  externalHddDevice = "/dev/disk/by-label/ExternalMedia2TB";
+  externalHddDevice = "/dev/disk/by-label/ExternalDrive";
 in
 
 {
@@ -15,11 +15,15 @@ in
 
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = ''
-        /run/wrappers/bin/mount ${externalHddDevice} /run/media/externalhdd
-        /run/wrappers/bin/chown :externalhdd /run/media/externalhdd
-      '';
       RemainAfterExit = true;
+      ExecStart = [
+        "${pkgs.coreutils}/bin/mkdir -p /run/media/externalhdd"
+        "${pkgs.util-linux}/bin/mount ${externalHddDevice} /run/media/externalhdd"
+        "${pkgs.coreutils}/bin/chown :externalhdd /run/media/externalhdd"
+      ];
+      ExecStop = [
+        "${pkgs.util-linux}/bin/unmount /run/media/externalhdd"
+      ];
     };
 
     # Specify that this should run after the user logs in
