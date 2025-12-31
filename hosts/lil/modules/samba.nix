@@ -18,7 +18,7 @@
         "map to guest" = "bad user";
       };
       "public" = {
-        "path" = "/run/media/externalhdd/shared";
+        "path" = "/mnt/externalhdd/shared";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "yes";
@@ -28,7 +28,7 @@
         "force group" = "externalhdd";
       };
       "private" = {
-        "path" = "/run/media/externalhdd/private";
+        "path" = "/mnt/externalhdd/private";
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";
