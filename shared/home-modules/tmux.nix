@@ -32,9 +32,13 @@ in
             extraConfig = ''
             # set -g dracula-show-powerline true
             set -g status-position top
+            set -g @dracula-plugins "battery cpu-usage weather"
+            set -g @dracula-fixed-location "Melbourne,AU"
+            set -g @dracula-show-fahrenheit false
+            set -g @dracula-show-location false
             '';
         }
-        tmux-which-key
+        # tmux-which-key
       ];
       extraConfig = '' 
         # Use ZSH
@@ -86,44 +90,44 @@ in
         ### Start Which key
         ###
 
-        set -g @wk_cfg_key_prefix_table "C-s"
-        set -g @wk_menu_root '\
-        "Suspend session" "C-z" "suspend" \
-        "" \
-        "[win] Create" "c" new-window \
-        "[win] Next" "n" next-window \
-        "[win] Prev" "p" previous-window \
-        "[win] Prev" "p" previous-window \
-        "[win] Kill" "q" kill-window \
-        "[win] List" "w" list-window \
-        "[win] Vert Split" "\\" "split-window -h" \
-        "[win] Hori Split" "-" "split-window -v" \
-        "" \
-        "[pane] Kill" "-" kill-pane \
-        "[pane] Zoom" "z" 
-        '
-
-        set -gF @wk_cmd_show \
-        "display-menu \
-        -x '#{@wk_cfg_pos_x}' \
-        -y '#{@wk_cfg_pos_y}' \
-        -T '#[#{@wk_cfg_title_style}]#[#{@wk_cfg_title_prefix_style}]#{@wk_cfg_title_prefix}#[#{@wk_cfg_title_style}]'"
-
-        set -gF command-alias[200] show-wk-menu=\
-        '#{@wk_cmd_show}'
-
-        set -gF command-alias[201] show-wk-menu-root=\
-        '#{@wk_cmd_show} #{@wk_menu_root}'
-
-        set -gF command-alias[202] reload-config=\
-        'display "#{log_info} Loading config... " ; \
-        source-file $HOME/.tmux.conf'
-
-        set -gF command-alias[203] restart-pane=\
-        'display "#{log_info} Restarting pane" ; \
-        respawnp -k -c #{pane_current_path}'
-
-        run-shell "tmux bind-key -Tprefix #{@wk_cfg_key_prefix_table} show-wk-menu-root"
+        # set -g @wk_cfg_key_prefix_table "C-s"
+        # set -g @wk_menu_root '\
+        # "Suspend session" "C-z" "suspend" \
+        # "" \
+        # "[win] Create" "c" new-window \
+        # "[win] Next" "n" next-window \
+        # "[win] Prev" "p" previous-window \
+        # "[win] Prev" "p" previous-window \
+        # "[win] Kill" "q" kill-window \
+        # "[win] List" "w" list-window \
+        # "[win] Vert Split" "\\" "split-window -h" \
+        # "[win] Hori Split" "-" "split-window -v" \
+        # "" \
+        # "[pane] Kill" "-" kill-pane \
+        # "[pane] Zoom" "z" 
+        # '
+        #
+        # set -gF @wk_cmd_show \
+        # "display-menu \
+        # -x '#{@wk_cfg_pos_x}' \
+        # -y '#{@wk_cfg_pos_y}' \
+        # -T '#[#{@wk_cfg_title_style}]#[#{@wk_cfg_title_prefix_style}]#{@wk_cfg_title_prefix}#[#{@wk_cfg_title_style}]'"
+        #
+        # set -gF command-alias[200] show-wk-menu=\
+        # '#{@wk_cmd_show}'
+        #
+        # set -gF command-alias[201] show-wk-menu-root=\
+        # '#{@wk_cmd_show} #{@wk_menu_root}'
+        #
+        # set -gF command-alias[202] reload-config=\
+        # 'display "#{log_info} Loading config... " ; \
+        # source-file $HOME/.tmux.conf'
+        #
+        # set -gF command-alias[203] restart-pane=\
+        # 'display "#{log_info} Restarting pane" ; \
+        # respawnp -k -c #{pane_current_path}'
+        #
+        # run-shell "tmux bind-key -Tprefix #{@wk_cfg_key_prefix_table} show-wk-menu-root"
 
       '';
     };
