@@ -15,6 +15,7 @@ map("n", "<leader>e", "<cmd>:Neotree filesystem reveal left toggle<CR>", { desc 
 map("n", "<leader>E", "<cmd>:Neotree filesystem reveal left<CR>", { desc = "Focus tree" })
 
 -- Telescope
+map("n", "<leader>fW", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", { desc = "Live grep args" })
 map("n", "<leader>fp", "<cmd>:Telescope resume<CR>", { desc = "Previous Telescope" })
 map("n", "<leader>fg", "<cmd>:Telescope git_bcommits<CR>", { desc = "Git file history " })
 

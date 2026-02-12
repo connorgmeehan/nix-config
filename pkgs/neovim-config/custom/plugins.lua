@@ -171,6 +171,7 @@ local plugins = {
                 enabled = false,
                 build = "mkdir -p build && cd build && cmake ../CMakeList.txt && make",
             },
+            { "nvim-telescope/telescope-live-grep-args.nvim", version = "^1.0.0" }
         },
         opts = {
             defaults = {
@@ -224,7 +225,7 @@ local plugins = {
             },
 
             extensions_list = { "themes", "terms" },
-            extensions = { "zf-native" },
+            extensions = { "zf-native", "live_grep_args"  },
         }
     },
 
