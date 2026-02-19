@@ -60,7 +60,7 @@ local plugins = {
     {
         'saghen/blink.cmp',
         -- optional: provides snippets for the snippet source
-        dependencies = { 'rafamadriz/friendly-snippets',  'fang2hou/blink-copilot' },
+        dependencies = { 'rafamadriz/friendly-snippets', 'fang2hou/blink-copilot' },
         event = "InsertEnter",
 
         -- use a release tag to download pre-built binaries
@@ -103,16 +103,16 @@ local plugins = {
             sources = {
                 default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
                 providers = {
-                copilot = {
-                  name = "copilot",
-                  module = "blink-copilot",
-                  score_offset = 0,
-                  async = true,
-                  opts = {
-                    max_completions = 3,
-                  }
+                    copilot = {
+                        name = "copilot",
+                        module = "blink-copilot",
+                        score_offset = 0,
+                        async = true,
+                        opts = {
+                            max_completions = 3,
+                        }
+                    },
                 },
-              },
             },
         },
         opts_extend = { "sources.default" }
@@ -225,7 +225,7 @@ local plugins = {
             },
 
             extensions_list = { "themes", "terms" },
-            extensions = { "zf-native", "live_grep_args"  },
+            extensions = { "zf-native", "live_grep_args" },
         }
     },
 
@@ -365,39 +365,31 @@ local plugins = {
     },
 
     {
-        'pwntester/octo.nvim',
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-            'nvim-telescope/telescope.nvim',
-            -- OR 'ibhagwan/fzf-lua',
-            -- OR 'folke/snacks.nvim',
-            'nvim-tree/nvim-web-devicons',
+        "folke/snacks.nvim",
+        priority = 1000,
+        lazy = false,
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+            bigfile = { enabled = true },
+            -- dashboard = { enabled = true },
+            -- explorer = { enabled = true },
+            -- indent = { enabled = true },
+            -- input = { enabled = true },
+            -- picker = { enabled = true },
+            notifier = { enabled = true },
+            gh = { enabled = true },
+            -- quickfile = { enabled = true },
+            -- scope = { enabled = true },
+            -- scroll = { enabled = true },
+            -- statuscolumn = { enabled = true },
+            -- words = { enabled = true },
         },
-        config = function()
-            require "octo".setup({
-                use_local_fs = true,
-                mappings_disable_default = false
-            })
-        end,
-        cmd = "Octo",
         keys = {
-            { "<leader>opl", "<cmd>Octo pr list<cr>",         desc = "List PRs" },
-            { "<leader>opC", "<cmd>Octo pr create<cr>",       desc = "Create PR" },
-            { "<leader>opc", "<cmd>Octo pr checkout<cr>",     desc = "Checkout PR from list" },
-            { "<leader>opu", "<cmd>Octo pr url<cr>",          desc = "Copy url" },
-
-            { "<leader>ors", "<cmd>Octo review start<cr>",    desc = "Start review" },
-            { "<leader>orS", "<cmd>Octo review submit<cr>",   desc = "Submit review" },
-            { "<leader>orx", "<cmd>Octo review close<cr>",    desc = "Close review" },
-            { "<leader>ord", "<cmd>Octo review discard<cr>",  desc = "Discard review" },
-            { "<leader>orr", "<cmd>Octo review resume<cr>",   desc = "Resume review" },
-            { "<leader>orc", "<cmd>Octo review commit<cr>",   desc = "Review a single commit" },
-            { "<leader>orp", "<cmd>Octo review comments<cr>", desc = "Preview pending comments" },
-
-            { "<leader>oca", "<cmd>Octo comment add<cr>",     desc = "Add comment" },
-            { "<leader>ocs", "<cmd>Octo comment suggest<cr>", desc = "Add suggestion" },
-            { "<leader>ocd", "<cmd>Octo comment delete<cr>",  desc = "Delete comment" },
-            { "<leader>ocu", "<cmd>Octo comment url<cr>",     desc = "Copy url" },
+            -- gh
+            { "<leader>gP", function() Snacks.picker.gh_pr() end,                  desc = "GitHub Pull Requests (open)" },
+            { "<leader>gA", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)" },
         }
     },
 
@@ -428,17 +420,17 @@ local plugins = {
     },
 
     {
-      "zbirenbaum/copilot.lua",
-      cmd = "Copilot",
-      event = "InsertEnter",
-      opts = {
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-        filetypes = {
-          markdown = true,
-          help = true,
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        event = "InsertEnter",
+        opts = {
+            suggestion = { enabled = false },
+            panel = { enabled = false },
+            filetypes = {
+                markdown = true,
+                help = true,
+            },
         },
-      },
     },
 
     {
@@ -451,6 +443,31 @@ local plugins = {
                 desc = "Start editing quickfix"
             },
         }
+    },
+
+    {
+        "coder/claudecode.nvim",
+        dependencies = { "folke/snacks.nvim" },
+        config = true,
+        keys = {
+            { "<leader>a",  nil,                              desc = "AI/Claude Code" },
+            { "<leader>ac", "<cmd>ClaudeCode<cr>",            desc = "Toggle Claude" },
+            { "<leader>af", "<cmd>ClaudeCodeFocus<cr>",       desc = "Focus Claude" },
+            { "<leader>ar", "<cmd>ClaudeCode --resume<cr>",   desc = "Resume Claude" },
+            { "<leader>aC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
+            { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
+            { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>",       desc = "Add current buffer" },
+            { "<leader>as", "<cmd>ClaudeCodeSend<cr>",        mode = "v",                  desc = "Send to Claude" },
+            {
+                "<leader>as",
+                "<cmd>ClaudeCodeTreeAdd<cr>",
+                desc = "Add file",
+                ft = { "NvimTree", "neo-tree", "oil", "minifiles", "netrw" },
+            },
+            -- Diff management
+            { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+            { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>",   desc = "Deny diff" },
+        },
     },
 
     {
@@ -514,6 +531,23 @@ local plugins = {
             "DiffviewRefresh",
             "DiffviewFileHistory",
         },
+        opts = {
+            enhanced_diff_hl = true,
+            default_args = { -- Default args prepended to the arg-list for the listed commands
+                DiffviewOpen = { "--imply-local" },
+                DiffviewFileHistory = {},
+            },
+        },
+        keys = {
+            { "<leader>gdo", "<cmd>DiffviewOpen<CR>",          "Open diff view" },
+            { "<leader>gdd", "<cmd>DiffviewOpen develop..HEAD<CR>",          "Open diff view" },
+            { "<leader>gdh", "<cmd>DiffviewFileHistory %<CR>", "Open file history" },
+            { "<leader>gdc", "<cmd>DiffviewClose<CR>", "Close diff view" },
+            { "<leader>gdl", function()
+                require("diffview.actions").cycle_layout()
+            end, "Change layout" },
+        },
+        setup = true,
     },
 }
 
