@@ -3,6 +3,7 @@
 
 { pkgs ? (import ../nixpkgs.nix) { } }: {
   neovim-config = pkgs.callPackage ./neovim-config { };
+  neovim-config2 = pkgs.callPackage ./neovim-config2 { };
   ny = pkgs.callPackage ./ny.nix { };
   escape-fsh = pkgs.callPackage ./escape-fhs.nix { };
   zinit = pkgs.callPackage ./zinit.nix { };

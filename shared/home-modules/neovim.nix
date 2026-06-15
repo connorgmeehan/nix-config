@@ -29,7 +29,7 @@
 
   # Config and plugins
   xdg.configFile."nvim" = {
-    source = "${pkgs.neovim-config}";
+    source = "${pkgs.neovim-config2}";
   };
 
   programs.bash.initExtra = lib.mkAfter ''
