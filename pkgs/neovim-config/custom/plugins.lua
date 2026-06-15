@@ -95,7 +95,6 @@ local plugins = {
             completion = {
                 menu = { draw = { columns = { { "kind_icon", "label", "label_description", gap = 1 } } } },
                 documentation = { auto_show = false },
-                ghost_text = { enabled = true },
             },
 
             -- Default list of enabled providers defined so that you can extend it
@@ -106,10 +105,11 @@ local plugins = {
                     copilot = {
                         name = "copilot",
                         module = "blink-copilot",
-                        score_offset = 0,
+                        score_offset = 10,
                         async = true,
                         opts = {
                             max_completions = 3,
+                            debounce = 200,
                         }
                     },
                 },
@@ -135,6 +135,7 @@ local plugins = {
     {
         "nvim-treesitter/nvim-treesitter",
         opts = overrides.treesitter,
+        branch = "master", -- TODO: delete this when migrating to nvim 0.12.x. #nvim #0.12
     },
 
     {
