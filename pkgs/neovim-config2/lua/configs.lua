@@ -1,4 +1,6 @@
+local icons = require("constants").icons
 local opt = vim.opt
+
 opt.guicursor = "i:ver25" -- Use thin caret cursor in insert mode
 opt.colorcolumn = "80" -- Highlight column 80
 opt.signcolumn = "yes:1" -- Always show sign column
@@ -11,7 +13,6 @@ opt.tabstop = 4 -- Number of spaces for a tab
 opt.softtabstop = 4 -- Number of spaces for a tab when editing
 opt.shiftwidth = 4 -- Number of spaces for autoindent
 opt.shiftround = true -- Round indent to multiple of shiftwidth
-opt.listchars = "tab: ,multispace:|" -- Characters to show for tabs, spaces, and end of line
 opt.fillchars = "eob: " -- Replaces ~
 opt.list = true -- Show whitespace characters
 opt.number = true -- Show line numbers
@@ -28,32 +29,55 @@ opt.winborder = "single" -- Use rounded borders for windows
 opt.hlsearch = true -- Disable highlighting of search results
 opt.clipboard = "unnamedplus" -- Use system clipboard
 opt.laststatus = 3 -- Global status line
+opt.splitbelow = true -- When :vsplit, move cursor below
+opt.splitright = true -- when :split, move cursor right
 
 vim.cmd.filetype("plugin indent on") -- Enable filetype detection, plugins, and indentation
 
+-- Indent guides, synced to editor config, autocommand adds mutlispace: based on option set
+opt.listchars = "tab: "..icons.seperator_sm .." ,"
+-- "multispace:|   " -- Characters to show for tabs, spaces, and end of line
+vim.api.nvim_create_autocmd({ "BufEnter", "OptionSet" }, {
+	callback = function(args)
+		if args.event == "OptionSet" and args.match ~= "shiftwidth" then
+			return
+		end
+		local sw = vim.bo.shiftwidth
+		if sw > 1 then
+			vim.opt_local.listchars:append({ leadmultispace = "|" .. string.rep(" ", sw - 1) })
+		end
+	end,
+})
+
+-- Configure diagnostic icons
 vim.diagnostic.config({
 	signs = {
 		text = {
-			[vim.diagnostic.severity.ERROR] = "✘",
-			[vim.diagnostic.severity.WARN] = "󱈸",
-			[vim.diagnostic.severity.INFO] = "󰙎",
-			[vim.diagnostic.severity.HINT] = "󰌵",
+			[vim.diagnostic.severity.ERROR] = icons.error,
+			[vim.diagnostic.severity.WARN] = icons.warn,
+			[vim.diagnostic.severity.INFO] = icons.info,
+			[vim.diagnostic.severity.HINT] = icons.hint,
 		},
 	},
 })
 
+-- Shorten yank highlight duration
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
 		vim.highlight.on_yank({ timeout = 100 })
 	end,
 })
 
+-- Colorscheme overrides
 vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function()
+		vim.api.nvim_set_hl(0, "MiniStatuslineFilename", { link = "@comment" })
+		vim.api.nvim_set_hl(0, "MiniStatuslineFileinfo", { link = "@comment" })
 		vim.api.nvim_set_hl(0, "WinBar", { link = "SpecialComment" })
 	end,
 })
 
+-- Enable lsp, configured by lsp-config
 vim.lsp.enable("ts_ls")
 vim.lsp.enable("html")
 vim.lsp.enable("cssls")

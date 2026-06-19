@@ -24,8 +24,8 @@ in
     settings = {
       # Font
       font_size = "12.0";
-
-      #Keybinds
+      bold_font = "JetBrainsMono-SemiBold";
+      modify_font = "cell_height 105%";
 
       # Scrollback
       scrollback_lines = 10000;
@@ -48,6 +48,7 @@ in
       strip_trailing_spaces = "smart";
       clipboard_control =
         "write-clipboard write-primary read-clipboard read-primary";
+      term = "xterm-256color";
 
       # Fix for Wayland slow scrolling
       touch_scroll_multiplier = "5.0";

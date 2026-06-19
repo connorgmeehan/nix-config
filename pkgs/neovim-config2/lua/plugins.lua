@@ -1,3 +1,4 @@
+local icons = require("constants").icons
 return {
 	-- LSP + Highlighting
 	{
@@ -147,17 +148,22 @@ return {
 			"nvim-tree/nvim-web-devicons", -- optional, but recommended
 		},
 		opts = {
-			mappings = {
-				["o"] = "open",
-				["c"] = "copy",
-				["y"] = "copy_to_clipboard",
-				["x"] = "cut_to_clipboard",
-				["p"] = "paste_from_clipboard",
-				["?"] = "show_help",
-				["a"] = {
-					"add",
-					config = {
-						show_path = "none",
+			filesystem = {
+				follow_current_file = { enabled = true },
+			},
+			window = {
+				mappings = {
+					["o"] = "open",
+					["c"] = "copy",
+					["y"] = "copy_to_clipboard",
+					["x"] = "cut_to_clipboard",
+					["p"] = "paste_from_clipboard",
+					["?"] = "show_help",
+					["a"] = {
+						"add",
+						config = {
+							show_path = "none",
+						},
 					},
 				},
 			},
@@ -166,10 +172,12 @@ return {
 		keys = {
 			{ "<leader>e", "<cmd>:Neotree filesystem reveal left toggle<CR>" },
 			{ "<leader>E", "<cmd>:Neotree filesystem reveal left<CR>" },
+			{ "<leader>ge", "<cmd>:Neotree git_status reveal left toggle<CR>" },
 		},
 	},
 	{
 		"Crysthamus/nvim-file-operations",
+		event = "VeryLazy",
 		-- branch = "compat" -- if you are on Neovim <= 0.10
 		dependencies = {
 			"nvim-neo-tree/neo-tree.nvim", -- makes sure that this loads after Neo-tree.
@@ -185,6 +193,7 @@ return {
 			-- downloads a prebuilt binary or falls back to cargo build
 			require("fff.download").download_or_build_binary()
 		end,
+		version = "0.9.*",
 		opts = {
 			debug = {
 				enabled = true,
@@ -221,11 +230,17 @@ return {
 				end,
 				desc = "Search current word",
 			},
+			{
+				"<leader>fp",
+				"<CMD>:FFFResume<CR>",
+				desc = "Resume",
+			},
 		},
 	},
 
 	{
 		"sindrets/diffview.nvim",
+		event = "VeryLazy",
 		cmd = {
 			"DiffviewOpen",
 			"DiffviewClose",
@@ -260,16 +275,18 @@ return {
 	-- Formatting
 	{
 		"stevearc/conform.nvim",
+		event = "VeryLazy",
 		config = function()
 			require("conform").setup({
 				formatters_by_ft = {
 					lua = { "stylua" },
 					javascript = { "prettierd", "prettier", stop_after_first = true },
 					typescript = { "prettierd", "prettier", stop_after_first = true },
-					python = { "black" },
+					javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+					typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+					-- python = { "black" },
 					rust = { "rustfmt" },
-					go = { "gofmt" },
-					nix = { "nixpkgs-fmt" },
+					-- go = { "gofmt" },
 					json = { "prettierd", "prettier", stop_after_first = true },
 					yaml = { "prettierd", "prettier", stop_after_first = true },
 					html = { "prettierd", "prettier", stop_after_first = true },
@@ -280,8 +297,8 @@ return {
 		keys = {
 			{
 				"<leader>fm",
-				function()
-					require("conform").format({ async = true })
+				function(args)
+					require("conform").format({ async = true, lsp_format = "fallback" })
 				end,
 				desc = "Format buffer",
 			},
@@ -291,9 +308,58 @@ return {
 
 	{
 		"mfussenegger/nvim-lint",
-		setup = function()
-			require("lint")
+		event = "VeryLazy",
+		config = function()
+			NVIM_LINT__LINTERS_BY_FT = {
+				javascript = { "eslint_d" },
+				typescript = { "eslint_d" },
+				javascriptreact = { "eslint_d" },
+				typescriptreact = { "eslint_d" },
+				rust = { "clippy" },
+			}
+
+			NVIM_LINT__LINT_CURRENT_BUFFER = function()
+				local linters = NVIM_LINT__LINTERS_BY_FT[vim.bo.filetype]
+				if linters then
+					for _, linter in ipairs(linters) do
+						require("lint").try_lint(linter)
+					end
+				end
+			end
+
+			vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+				callback = NVIM_LINT__LINT_CURRENT_BUFFER,
+			})
 		end,
+		keys = {
+			{
+				"<leader>fl",
+				function()
+					NVIM_LINT__LINT_CURRENT_BUFFER()
+				end,
+				desc = "Lint buffer",
+			},
+			{
+				"<leader>tl",
+				function()
+					local ft = vim.bo.filetype
+					local configured = NVIM_LINT__LINTERS_BY_FT[ft] or {}
+					local running = require("lint").get_running(vim.api.nvim_get_current_buf())
+					local lines = { "Lint status [" .. ft .. "]:" }
+					if #configured == 0 then
+						table.insert(lines, "  No linters configured")
+					else
+						for _, name in ipairs(configured) do
+							local active = vim.tbl_contains(running, name)
+							local status = active and "running" or "available"
+							table.insert(lines, "  " .. name .. " (" .. status .. ")")
+						end
+					end
+					vim.notify(table.concat(lines, "\n"), vim.log.levels.INFO)
+				end,
+				desc = "Lint status",
+			},
+		},
 	},
 
 	-- Misc
@@ -305,7 +371,7 @@ return {
 				mappings = {
 					add = "ys", -- Add surrounding in Normal and Visual modes
 					delete = "ds", -- Delete surrounding
-					highlight = "vs", -- Highlight surrounding
+					highlight = "sa", -- Highlight surrounding
 					replace = "cs", -- Replace surrounding
 				},
 			})
@@ -314,26 +380,75 @@ return {
 			require("mini.tabline").setup()
 
 			local MiniStatusline = require("mini.statusline")
+
+			local badge = function(icon, label_fn)
+				return function()
+					local label = label_fn()
+					if label == nil then
+						return ""
+					end
+
+					return icon .. " " .. label
+				end
+			end
+
+			local repo_name = badge(icons.folder, function()
+				local status = vim.b.gitsigns_status_dict
+				if status and status.root then
+					return vim.fn.fnamemodify(status.root, ":t")
+				end
+			end)
+
+			local branch_name = badge(icons.branch, function()
+				local status = vim.b.gitsigns_status_dict
+				if status and status.head then
+					return status.head
+				end
+			end)
+
+			local dirty = badge(icons.plus_minus, function()
+				local status = vim.b.gitsigns_status_dict
+				if status and status.added and status.changed and status.removed then
+					local changes = status.added + status.changed + status.removed
+					if changes > 0 then
+						return changes
+					end
+				end
+			end)
+
 			require("mini.statusline").setup({
 				content = {
 					active = function()
 						local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
-						local git = MiniStatusline.section_git({ trunc_width = 40 })
-						local diff = MiniStatusline.section_diff({ trunc_width = 75 })
-						local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
-						local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
-						local filename = MiniStatusline.section_filename({ trunc_width = 140 })
+						local diagnostics = MiniStatusline.section_diagnostics({
+							trunc_width = 75,
+							icon = "",
+							signs = {
+								ERROR = icons.error .. " ",
+								WARN = icons.warn .. " ",
+								INFO = icons.info .. " ",
+								HINT = icons.hint .. " ",
+							},
+						})
+						local lsp = MiniStatusline.section_lsp({ icon = icons.language, trunc_width = 75 })
+						-- local filename = MiniStatusline.section_filename({ trunc_width = 140 })
 						local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 120 })
-						local location = '%l:%L %2v:%-2{virtcol("$") - 1}'
+						local short_location = "%l:%2v"
 
 						return MiniStatusline.combine_groups({
 							{ hl = mode_hl, strings = { mode } },
-							{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics, lsp } },
+							{
+								hl = "MiniStatuslineDevinfo",
+								strings = { lsp },
+							},
 							"%<", -- Mark general truncate point
-							{ hl = "MiniStatuslineFilename", strings = { filename } },
+							{
+								hl = "MiniStatuslineFilename",
+								strings = { repo_name(), branch_name(), dirty() },
+							},
 							"%=", -- End left alignment
 							{ hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
-							{ hl = mode_hl, strings = { location } },
+							{ hl = mode_hl, strings = { short_location } },
 						})
 					end,
 				},
@@ -341,6 +456,7 @@ return {
 			})
 		end,
 	},
+
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
@@ -359,9 +475,11 @@ return {
 			},
 		},
 	},
+
 	{
 
 		"lewis6991/gitsigns.nvim",
+		event = "VeryLazy",
 		keys = {
 			{
 				"<leader>gn",
@@ -388,6 +506,11 @@ return {
 				"<cmd>Gitsigns setqflist<CR>",
 				desc = "Quickfix",
 			},
+			{
+				"<leader>gR",
+				"<cmd>Gitsigns reset_hunk<CR>",
+				desc = "Reset hunk",
+			},
 		},
 		config = true,
 	},
@@ -396,18 +519,21 @@ return {
 	{
 		"bekaboo/dropbar.nvim",
 		event = "VeryLazy",
-		opts = {
-			icons = {
-				ui = {
-					bar = {
-						seperator = "󰍟",
-					},
-				},
+		config = true,
+		keys = {
+			{
+				"<leader>tb",
+				function()
+					if vim.o.winbar == "" then
+						vim.o.winbar = "%{%v:lua.dropbar()%}"
+					else
+						vim.o.winbar = ""
+					end
+				end,
+				desc = "Breadcrumbs",
 			},
 		},
 	},
-
-	-- { "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons", config = true },
 
 	{
 		"alexghergh/nvim-tmux-navigation",
@@ -438,6 +564,12 @@ return {
 						bold = false,
 					},
 				},
+				on_highlights = function(highlights, theme)
+					highlights["NeoTreeWinSeparator"] = { fg = theme.ui.base3, bg = theme.ui.base3 }
+					-- highlights["FloatBorder"] = { fg = theme.ui.base1, bg = theme.ui.base0 }
+					highlights["@function"].fg = theme.syn.sage
+					highlights["@function.call"].fg = theme.syn.steel
+				end,
 			})
 			vim.cmd("colorscheme ember")
 		end,
