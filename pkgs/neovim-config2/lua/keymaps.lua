@@ -28,6 +28,7 @@ keymap("n", "gh", vim.lsp.buf.signature_help, { desc = "[LSP] Signature help" })
 keymap("n", "gO", vim.lsp.buf.outgoing_calls, { desc = "[LSP] Outgoing calls" })
 keymap("n", "gI", vim.lsp.buf.incoming_calls, { desc = "[LSP] Incoming calls" })
 keymap("n", "<leader>cr", vim.lsp.buf.rename, { desc = "[LSP] Rename" })
+keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "[LSP] Code actions" })
 
 keymap("n", "<C-h>", "<C-w>h")
 keymap("n", "<C-j>", "<C-w>j")

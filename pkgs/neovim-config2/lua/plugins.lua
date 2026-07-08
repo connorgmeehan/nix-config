@@ -257,10 +257,10 @@ return {
 			},
 		},
 		keys = {
-			{ "<leader>do", "<cmd>DiffviewOpen<CR>", "Open diff view" },
-			{ "<leader>dd", "<cmd>DiffviewOpen develop..HEAD<CR>", "Open diff view" },
-			{ "<leader>dh", "<cmd>DiffviewFileHistory %<CR>", "Open file history" },
-			{ "<leader>dc", "<cmd>DiffviewClose<CR>", "Close diff view" },
+			{ "<leader>do", "<cmd>DiffviewOpen<CR>", desc = "Open diff view" },
+			{ "<leader>dd", "<cmd>DiffviewOpen develop..HEAD<CR>", desc = "Diff with develop" },
+			{ "<leader>dh", "<cmd>DiffviewFileHistory %<CR>", desc = "Open file history" },
+			{ "<leader>dc", "<cmd>DiffviewClose<CR>", desc = "Close diff view" },
 			{
 				"<leader>dl",
 				function()
@@ -307,59 +307,21 @@ return {
 	},
 
 	{
-		"mfussenegger/nvim-lint",
+		"nvimtools/none-ls.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvimtools/none-ls-extras.nvim",
+		},
 		event = "VeryLazy",
 		config = function()
-			NVIM_LINT__LINTERS_BY_FT = {
-				javascript = { "eslint_d" },
-				typescript = { "eslint_d" },
-				javascriptreact = { "eslint_d" },
-				typescriptreact = { "eslint_d" },
-				rust = { "clippy" },
-			}
-
-			NVIM_LINT__LINT_CURRENT_BUFFER = function()
-				local linters = NVIM_LINT__LINTERS_BY_FT[vim.bo.filetype]
-				if linters then
-					for _, linter in ipairs(linters) do
-						require("lint").try_lint(linter)
-					end
-				end
-			end
-
-			vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-				callback = NVIM_LINT__LINT_CURRENT_BUFFER,
+			local null_ls = require("null-ls")
+			null_ls.setup({
+				sources = {
+					require("none-ls.diagnostics.eslint_d"),
+					require("none-ls.code_actions.eslint_d"),
+				},
 			})
 		end,
-		keys = {
-			{
-				"<leader>fl",
-				function()
-					NVIM_LINT__LINT_CURRENT_BUFFER()
-				end,
-				desc = "Lint buffer",
-			},
-			{
-				"<leader>tl",
-				function()
-					local ft = vim.bo.filetype
-					local configured = NVIM_LINT__LINTERS_BY_FT[ft] or {}
-					local running = require("lint").get_running(vim.api.nvim_get_current_buf())
-					local lines = { "Lint status [" .. ft .. "]:" }
-					if #configured == 0 then
-						table.insert(lines, "  No linters configured")
-					else
-						for _, name in ipairs(configured) do
-							local active = vim.tbl_contains(running, name)
-							local status = active and "running" or "available"
-							table.insert(lines, "  " .. name .. " (" .. status .. ")")
-						end
-					end
-					vim.notify(table.concat(lines, "\n"), vim.log.levels.INFO)
-				end,
-				desc = "Lint status",
-			},
-		},
 	},
 
 	-- Misc
