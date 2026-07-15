@@ -527,7 +527,9 @@ return {
 					},
 				},
 				on_highlights = function(highlights, theme)
-					highlights["NeoTreeWinSeparator"] = { fg = theme.ui.base3, bg = theme.ui.base3 }
+					highlights["NeoTreeWinSeparator"].fg = theme.ui.base4
+					highlights["NeoTreeWinSeparator"].bg = theme.ui.bg_alt
+
 					-- highlights["FloatBorder"] = { fg = theme.ui.base1, bg = theme.ui.base0 }
 					highlights["@function"].fg = theme.syn.sage
 					highlights["@function.call"].fg = theme.syn.steel
