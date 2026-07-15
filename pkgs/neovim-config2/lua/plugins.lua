@@ -28,6 +28,7 @@ return {
 				"markdown",
 				"markdown_inline",
 				"python",
+				"swift",
 				"typescript",
 				"vim",
 				"vimdoc",

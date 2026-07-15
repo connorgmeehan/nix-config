@@ -77,8 +77,16 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	end,
 })
 
+-- roslyn_ls runs as a self-contained .NET apphost, so it needs DOTNET_ROOT to
+-- locate the runtime. The nix dotnet wrapper only sets this for `dotnet` itself,
+-- so resolve it here (through the wrapper symlink) for the whole nvim process.
+if vim.env.DOTNET_ROOT == nil and vim.fn.executable("dotnet") == 1 then
+	vim.env.DOTNET_ROOT = vim.fn.fnamemodify(vim.fn.resolve(vim.fn.exepath("dotnet")), ":h")
+end
+
 -- Enable lsp, configured by lsp-config
 vim.lsp.enable("ts_ls")
+vim.lsp.enable("tailwindcss")
 vim.lsp.enable("html")
 vim.lsp.enable("cssls")
 vim.lsp.enable("rust_analyzer")
@@ -88,3 +96,5 @@ vim.lsp.enable("lua_ls")
 vim.lsp.enable("jsonls")
 vim.lsp.enable("yamlls")
 vim.lsp.enable("nil_ls")
+vim.lsp.enable("roslyn_ls")
+vim.lsp.enable("sourcekit")

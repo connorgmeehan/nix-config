@@ -29,6 +29,21 @@ keymap("n", "gO", vim.lsp.buf.outgoing_calls, { desc = "[LSP] Outgoing calls" })
 keymap("n", "gI", vim.lsp.buf.incoming_calls, { desc = "[LSP] Incoming calls" })
 keymap("n", "<leader>cr", vim.lsp.buf.rename, { desc = "[LSP] Rename" })
 keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "[LSP] Code actions" })
+keymap("n", "<leader>cl", function()
+	local clients = vim.lsp.get_clients({ bufnr = 0 })
+	if vim.tbl_isempty(clients) then
+		vim.notify("No LSP clients attached to this buffer")
+		return
+	end
+	for _, client in ipairs(clients) do
+		vim.notify(vim.inspect({
+			name = client.name,
+			id = client.id,
+			root_dir = client.config.root_dir,
+			filetypes = client.config.filetypes,
+		}))
+	end
+end, { desc = "[LSP] Log info to :messages" })
 
 keymap("n", "<C-h>", "<C-w>h")
 keymap("n", "<C-j>", "<C-w>j")
