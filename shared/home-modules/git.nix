@@ -54,7 +54,10 @@
         syntax-theme = "Nord";
         line-numbers = true;
       };
-      credential.helper = "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
+      credential.helper =
+        if pkgs.stdenv.isDarwin
+        then "osxkeychain"
+        else "${pkgs.gitAndTools.gitFull}/bin/git-credential-libsecret";
       merge = {
           ff = false;
       };
