@@ -29,7 +29,7 @@ keymap("n", "gO", vim.lsp.buf.outgoing_calls, { desc = "[LSP] Outgoing calls" })
 keymap("n", "gI", vim.lsp.buf.incoming_calls, { desc = "[LSP] Incoming calls" })
 keymap("n", "<leader>cr", vim.lsp.buf.rename, { desc = "[LSP] Rename" })
 keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "[LSP] Code actions" })
-keymap("n", "<leader>cl", function()
+keymap("n", "<leader>cp", function()
 	local clients = vim.lsp.get_clients({ bufnr = 0 })
 	if vim.tbl_isempty(clients) then
 		vim.notify("No LSP clients attached to this buffer")
@@ -44,6 +44,28 @@ keymap("n", "<leader>cl", function()
 		}))
 	end
 end, { desc = "[LSP] Log info to :messages" })
+
+keymap("n", "<leader>cl", function()
+	vim.cmd("tabnew " .. require("vim.lsp.log").get_filename())
+end, { desc = "[LSP] Open LSP logs in buffer" })
+
+keymap("n", "<leader>fy", function()
+	local abs = vim.fn.expand("%:p")
+	local root = vim.fs.root(0, ".git")
+	local path = root and vim.fs.relpath(root, abs) or abs
+	vim.fn.setreg("+", path)
+	vim.notify("Copied: " .. path)
+end, { desc = "Copy file path (relative to git root)" })
+keymap("n", "<leader>fY", function()
+	local abs = vim.fn.expand("%:p")
+	vim.fn.setreg("+", abs)
+	vim.notify("Copied: " .. abs)
+end, { desc = "Copy file path (absolute)" })
+
+keymap("n", "<leader>fo", function()
+	local dir = vim.fn.expand("%:p:h")
+	vim.system({ "open", dir })
+end, { desc = "Open containing folder in Finder" })
 
 keymap("n", "<C-h>", "<C-w>h")
 keymap("n", "<C-j>", "<C-w>j")
