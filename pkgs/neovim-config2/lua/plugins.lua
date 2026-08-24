@@ -344,6 +344,45 @@ return {
 
 			local MiniStatusline = require("mini.statusline")
 
+			-- Track per-client LSP indexing progress via $/progress
+			local lsp_progress = {}
+			vim.api.nvim_create_autocmd("LspProgress", {
+				group = vim.api.nvim_create_augroup("UserLspProgress", { clear = true }),
+				callback = function(args)
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+					local name = client and client.name or "lsp"
+					local value = args.data.params.value
+					if not value or not value.kind then
+						return
+					end
+					if value.kind == "end" then
+						lsp_progress[name] = nil
+					else
+						lsp_progress[name] = value.percentage or 0
+					end
+					vim.cmd("redrawstatus")
+				end,
+			})
+
+			-- Single braille char loading bar (9 fill levels, 0-100%)
+			local function braille_bar(pct)
+				local levels = { "⠀", "⡀", "⡄", "⡆", "⡇", "⣇", "⣧", "⣷", "⣿" }
+				local idx = math.floor((pct / 100) * (#levels - 1) + 0.5) + 1
+				idx = math.max(1, math.min(#levels, idx))
+				return levels[idx]
+			end
+
+			local function lsp_indexing()
+				local parts = {}
+				for name, pct in pairs(lsp_progress) do
+					table.insert(parts, name .. " " .. braille_bar(pct))
+				end
+				if #parts == 0 then
+					return ""
+				end
+				return table.concat(parts, " ")
+			end
+
 			local badge = function(icon, label_fn)
 				return function()
 					local label = label_fn()
@@ -402,7 +441,7 @@ return {
 							{ hl = mode_hl, strings = { mode } },
 							{
 								hl = "MiniStatuslineDevinfo",
-								strings = { lsp },
+								strings = { lsp, lsp_indexing() },
 							},
 							"%<", -- Mark general truncate point
 							{
