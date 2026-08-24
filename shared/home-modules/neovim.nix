@@ -20,7 +20,6 @@
     pkgs.cairo
     pkgs.lldb_19
     pkgs.gh
-    pkgs.swiftPackages.sourcekit-lsp
   ];
   programs.neovim = {
     enable = true;
