@@ -220,7 +220,7 @@ return {
 			{
 				"<leader>fw",
 				function()
-					require("fff").live_grep({ grep = { modes = { "fuzzy", "plain" } } })
+					require("fff").live_grep({ grep = { modes = { "fuzzy", "plain", "regex" } } })
 				end,
 				desc = "Live fffuzy grep",
 			},
