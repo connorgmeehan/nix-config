@@ -260,6 +260,8 @@ return {
 		keys = {
 			{ "<leader>do", "<cmd>DiffviewOpen<CR>", desc = "Open diff view" },
 			{ "<leader>dd", "<cmd>DiffviewOpen develop..HEAD<CR>", desc = "Diff with develop" },
+			{ "<leader>dm", "<cmd>DiffviewOpen main..HEAD<CR>", desc = "Diff with main" },
+			{ "<leader>dM", "<cmd>DiffviewOpen master..HEAD<CR>", desc = "Diff with master" },
 			{ "<leader>dh", "<cmd>DiffviewFileHistory %<CR>", desc = "Open file history" },
 			{ "<leader>dc", "<cmd>DiffviewClose<CR>", desc = "Close diff view" },
 			{
@@ -316,9 +318,11 @@ return {
 		event = "VeryLazy",
 		config = function()
 			local null_ls = require("null-ls")
+
 			null_ls.setup({
 				sources = {
 					require("none-ls.diagnostics.eslint_d"),
+					require("none-ls.code_actions.eslint_d"),
 					require("none-ls.code_actions.eslint_d"),
 				},
 			})

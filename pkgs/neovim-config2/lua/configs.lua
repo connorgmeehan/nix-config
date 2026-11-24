@@ -97,4 +97,15 @@ vim.lsp.enable("jsonls")
 vim.lsp.enable("yamlls")
 vim.lsp.enable("nil_ls")
 vim.lsp.enable("roslyn_ls")
+vim.lsp.enable('oxlint')
+vim.lsp.enable('oxfmt')
+-- sourcekit-lsp writes into .build by default, which trips the file watcher and
+-- causes a rebuild/reindex loop. Give it its own scratch path so LSP builds land
+-- in .build/sourcekit-lsp, separate from the main .build the watcher tracks.
+-- Same keys as .sourcekit-lsp/config.json, passed via initializationOptions.
+vim.lsp.config("sourcekit", {
+	init_options = {
+		swiftPM = { scratchPath = ".build/sourcekit-lsp" },
+	},
+})
 vim.lsp.enable("sourcekit")
