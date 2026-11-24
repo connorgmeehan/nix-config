@@ -20,6 +20,7 @@ in
         "${pkgs.coreutils}/bin/mkdir -p /mnt/externalhdd"
         "${pkgs.util-linux}/bin/mount ${externalHddDevice} /mnt/externalhdd"
         "${pkgs.coreutils}/bin/chown :externalhdd /mnt/externalhdd"
+	"${pkgs.coreutils}/bin/chmod 775 /mnt/externalhdd"
       ];
       ExecStop = [
         "${pkgs.util-linux}/bin/unmount /mnt/externalhdd"
